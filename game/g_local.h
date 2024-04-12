@@ -734,6 +734,10 @@ void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed
 void fire_rail (edict_t *self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void fire_bfg (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius);
 
+// additions
+void fire_blaster_repeat(edict_t* self);
+void fire_blaster_mini(edict_t* self, vec3_t start, vec3_t dir, int damage, int speed, int effect, qboolean hyper);
+
 //
 // g_ptrail.c
 //
