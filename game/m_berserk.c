@@ -455,3 +455,5 @@ void SP_monster_berserk (edict_t *self)
 
 	walkmonster_start (self);
 }
+
+
