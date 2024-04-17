@@ -284,7 +284,7 @@ mframe_t berserk_frames_pain1 [] =
 	ai_move, 0, NULL,
 	ai_move, 0, NULL
 };
-mmove_t berserk_move_pain1 = {FRAME_painc1, FRAME_painc4, berserk_frames_pain1, berserk_run};
+mmove_t berserk_move_pain1 = {FRAME_painc1, FRAME_painc4, berserk_frames_pain1, berserk_stand};
 
 
 mframe_t berserk_frames_pain2 [] =
@@ -310,7 +310,7 @@ mframe_t berserk_frames_pain2 [] =
 	ai_move, 0, NULL,
 	ai_move, 0, NULL
 };
-mmove_t berserk_move_pain2 = {FRAME_painb1, FRAME_painb20, berserk_frames_pain2, berserk_run};
+mmove_t berserk_move_pain2 = {FRAME_painb1, FRAME_painb20, berserk_frames_pain2, berserk_stand};
 
 void berserk_pain (edict_t *self, edict_t *other, float kick, int damage)
 {
@@ -456,4 +456,53 @@ void SP_monster_berserk (edict_t *self)
 	walkmonster_start (self);
 }
 
+/*QUAKED monster_berserk (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
+*/
+void SP_monster_dumbberserk(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
 
+	self->speed = 0;
+
+
+	// pre-caches
+	sound_pain = gi.soundindex("berserk/berpain2.wav");
+	sound_die = gi.soundindex("berserk/berdeth2.wav");
+	sound_idle = gi.soundindex("berserk/beridle1.wav");
+	sound_punch = gi.soundindex("berserk/attack.wav");
+	sound_search = gi.soundindex("berserk/bersrch1.wav");
+	sound_sight = gi.soundindex("berserk/sight.wav");
+
+	self->s.modelindex = gi.modelindex("models/monsters/berserk/tris.md2");
+	VectorSet(self->mins, -16, -16, -24);
+	VectorSet(self->maxs, 16, 16, 32);
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+
+	self->health = 240;
+	self->gib_health = -60;
+	self->mass = 2500;
+
+	self->pain = berserk_pain;
+	self->die = berserk_die;
+
+	self->monsterinfo.stand = berserk_stand;
+	self->monsterinfo.walk = berserk_stand;
+	self->monsterinfo.run = berserk_stand;
+	self->monsterinfo.dodge = NULL;
+	self->monsterinfo.attack = NULL;
+	self->monsterinfo.melee = berserk_stand;
+	self->monsterinfo.sight = berserk_stand;
+	self->monsterinfo.search = berserk_stand;
+
+	self->monsterinfo.currentmove = &berserk_move_stand;
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	gi.linkentity(self);
+
+	walkmonster_start(self);
+}

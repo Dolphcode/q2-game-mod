@@ -922,7 +922,7 @@ void Cmd_SpawnBerserker_f(edict_t* ent) {
 	VectorAdd(ent->s.origin, v, v);
 	VectorCopy(v, berserker->s.origin);
 	
-	SP_monster_berserk(berserker);
+	SP_monster_dumbberserk(berserker);
 }
 
 

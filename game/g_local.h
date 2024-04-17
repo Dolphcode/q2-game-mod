@@ -685,6 +685,7 @@ void monster_fire_bfg (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 void M_droptofloor (edict_t *ent);
 void monster_think (edict_t *self);
 void walkmonster_start (edict_t *self);
+void monster_start_go(edict_t* self); // TOUCHING THINGS I SHOULDN'T BE TOUCHING
 void swimmonster_start (edict_t *self);
 void flymonster_start (edict_t *self);
 void AttackFinished (edict_t *self, float time);
