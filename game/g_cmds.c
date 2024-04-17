@@ -928,6 +928,18 @@ void Cmd_SpawnBerserker_f(edict_t* ent) {
 
 /*
 =================
+PrintHunger
+=================
+*/
+void Cmd_PrintHunger_f(edict_t* ent) {
+	if (ent->client) {
+		gi.cprintf(ent, PRINT_HIGH, "Hunger: %i", ent->hunger);
+	}
+}
+
+
+/*
+=================
 ClientCommand
 =================
 */
@@ -1015,6 +1027,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_PlayerList_f(ent);
 	else if (Q_stricmp(cmd, "spawnBerserker") == 0)
 		Cmd_SpawnBerserker_f(ent);
+	else if (Q_stricmp(cmd, "printHunger") == 0)
+		Cmd_PrintHunger_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

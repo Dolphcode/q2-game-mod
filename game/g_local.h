@@ -846,6 +846,8 @@ typedef struct
 	int			max_health;
 	int			savedFlags;
 
+	int			hunger;
+
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
 
@@ -1061,6 +1063,9 @@ struct edict_s
 	int			gib_health;
 	int			deadflag;
 	qboolean	show_hostile;
+
+	// Test stat
+	int			hunger;
 
 	float		powerarmor_time;
 
