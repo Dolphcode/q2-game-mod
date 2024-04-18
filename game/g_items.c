@@ -535,6 +535,40 @@ void Drop_Ammo (edict_t *ent, gitem_t *item)
 	ValidateSelectedItem (ent);
 }
 
+//================================================================= MOD ADDITION
+
+/* Method for picking up resources */
+void Pickup_Resource(edict_t* ent, edict_t* other)
+{
+	other->client->pers.inventory[ITEM_INDEX(ent->item)] += 1;
+	return true;
+}
+
+void Use_Food(edict_t* ent, gitem_t* item)
+{
+	int		index;
+
+	index = ITEM_INDEX(item);
+	if (!ent->client->pers.inventory[index])
+	{
+		gi.cprintf(ent, PRINT_HIGH, "No food to consume.\n");
+		return;
+	}
+
+	if (Q_stricmp(item->pickup_name, "IV Drip")) {
+		ent->health += 20;
+		if (ent->health >= ent->max_health)
+			ent->health = ent->max_health;
+		ent->hunger += 20;
+	}
+	else {
+		ent->sanity += 20;
+		ent->hunger += 20;
+	}
+
+	gi.sound(ent, CHAN_AUTO, gi.soundindex("misc/power1.wav"), 1, ATTN_NORM, 0);
+}
+
 
 //======================================================================
 
@@ -1137,14 +1171,134 @@ gitem_t	itemlist[] =
 		NULL
 	},	// leave index 0 alone
 
+	// 
+	// RESOURCES - MOD ADDITION
+	//
+
+	/*QUAKED item_wood (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_wood",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_bodyarmor",
+		/* pickup */	"Wood",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+				/* precache */ ""
+					},
+
+	/*QUAKED item_stone (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_stone",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_bodyarmor",
+		/* pickup */	"Stone",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+			},
+
+	/*QUAKED item_marble (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_marble",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_bodyarmor",
+		/* pickup */	"Marble",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+			},
+
+	/*QUAKED item_iv_drip (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_iv_drip",
+		Pickup_Resource,
+		Use_Food,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_bodyarmor",
+		/* pickup */	"IV Drip",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+			},
+
+		/*QUAKED item_iv_drip (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_stew_vial",
+		Pickup_Resource,
+		Use_Food,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_bodyarmor",
+		/* pickup */	"Vial of Stew",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+	},
+
+
 	//
 	// ARMOR
 	//
 
-/*QUAKED item_armor_body (.3 .3 1) (-16 -16 -16) (16 16 16)
+	/*QUAKED item_armor_body (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"item_armor_body", 
+		"item_armor_body",
 		Pickup_Armor,
 		NULL,
 		NULL,
@@ -1152,16 +1306,16 @@ gitem_t	itemlist[] =
 		"misc/ar1_pkup.wav",
 		"models/items/armor/body/tris.md2", EF_ROTATE,
 		NULL,
-/* icon */		"i_bodyarmor",
-/* pickup */	"Body Armor",
-/* width */		3,
-		0,
-		NULL,
-		IT_ARMOR,
-		0,
-		&bodyarmor_info,
-		ARMOR_BODY,
-/* precache */ ""
+		/* icon */		"i_bodyarmor",
+		/* pickup */	"Body Armor",
+		/* width */		3,
+				0,
+				NULL,
+				IT_ARMOR,
+				0,
+				&bodyarmor_info,
+				ARMOR_BODY,
+				/* precache */ ""
 	},
 
 /*QUAKED item_armor_combat (.3 .3 1) (-16 -16 -16) (16 16 16)

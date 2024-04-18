@@ -314,6 +314,7 @@ void HelpComputer (edict_t *ent)
 		sk = "hard+";
 
 	// send the layout
+	/*
 	Com_sprintf (string, sizeof(string),
 		"xv 32 yv 8 picn help "			// background
 		"xv 202 yv 12 string2 \"%s\" "		// skill
@@ -327,6 +328,41 @@ void HelpComputer (edict_t *ent)
 		game.helpmessage1,
 		game.helpmessage2,
 		level.killed_monsters, level.total_monsters, 
+		level.found_goals, level.total_goals,
+		level.found_secrets, level.total_secrets);
+	*/
+	
+
+	/* MOD ADDITION
+	*  - Displays stats
+	*  - Displays craftables
+	*/
+	Com_sprintf(string, sizeof(string),
+		/*"xv 32 yv 8 picn help "			// background*/
+		"xv -96 yv -80 picn inventory "			// background
+		"xv -64 yv -48 string2 \"Hunger: %i\" "		// hunger
+		"xv -64 yv -16 string2 \"Sanity: %i\" "		// sanity
+		"xv -64 yv 16 string2 \"Stamina: %i\" "		// stamina
+		"xv -64 yv 48 string2 \"Temperature: %i\" "		// temperature
+		"xv -64 yv 80 string2 \"Mightiness: %i\" "		// mightiness
+		"xv 160 yv -80 picn inventory "			// background
+		"xv 32 yv 100 picn help "			// background
+		"xv 202 yv 104 string2 \"%s\" "		// skill
+		"xv 0 yv 116 cstring2 \"%s\" "		// level name
+		"xv 0 yv 146 cstring2 \"%s\" "		// help 1
+		"xv 0 yv 202 cstring2 \"%s\" "		// help 2
+		"xv 50 yv 256 string2 \" kills     score    hi-score\" "
+		"xv 50 yv 264 string2 \" %3i      %i/%i       %i/%i\" ",
+		ent->hunger,
+		ent->sanity,
+		ent->stamina,
+		ent->temperature,
+		ent->mightiness,
+		sk,
+		"The Constant",
+		"Survive for as long as possible",
+		"Beat your high score",
+		level.killed_monsters,
 		level.found_goals, level.total_goals,
 		level.found_secrets, level.total_secrets);
 
