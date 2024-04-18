@@ -555,6 +555,8 @@ void Use_Food(edict_t* ent, gitem_t* item)
 		return;
 	}
 
+	ent->client->pers.inventory[index] -= 1;
+
 	if (Q_stricmp(item->pickup_name, "IV Drip")) {
 		ent->health += 20;
 		if (ent->health >= ent->max_health)
