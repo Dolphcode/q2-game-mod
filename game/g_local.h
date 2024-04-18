@@ -841,6 +841,20 @@ typedef struct
 	int			max_health;
 	int			savedFlags;
 
+	/* MOD ADDITIONS
+		Adding the five stats
+		 - Hunger
+		 - Sanity
+		 - Stamina
+		 - Temperature
+		 - Mightiness
+	*/
+	int			hunger;
+	int			sanity;
+	int			stamina;
+	int			temperature;
+	int			mightiness;
+
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
 
@@ -1056,6 +1070,20 @@ struct edict_s
 	int			gib_health;
 	int			deadflag;
 	qboolean	show_hostile;
+
+	/* MOD ADDITIONS
+		Adding the five stats
+		 - Hunger
+		 - Sanity
+		 - Stamina
+		 - Temperature
+		 - Mightiness
+	*/
+	int			hunger;
+	int			sanity;
+	int			stamina;
+	int			temperature;
+	int			mightiness;
 
 	float		powerarmor_time;
 

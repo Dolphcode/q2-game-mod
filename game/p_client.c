@@ -619,6 +619,15 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.health			= 100;
 	client->pers.max_health		= 100;
 
+	/* MOD ADDITION
+	*	- Adding initializing the stats here
+	*/
+	client->pers.hunger			= 100;
+	client->pers.sanity			= 100;
+	client->pers.stamina		= 100;
+	client->pers.temperature	= 100;
+	client->pers.mightiness		= 100;
+
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
 	client->pers.max_rockets	= 50;
@@ -669,6 +678,16 @@ void FetchClientEntData (edict_t *ent)
 {
 	ent->health = ent->client->pers.health;
 	ent->max_health = ent->client->pers.max_health;
+
+	/* MOD ADDITION
+	*	- Fetch relevant data for client
+	*/
+	ent->hunger = ent->client->pers.hunger;
+	ent->sanity = ent->client->pers.sanity;
+	ent->temperature = ent->client->pers.temperature;
+	ent->stamina = ent->client->pers.stamina;
+	ent->mightiness = ent->client->pers.mightiness;
+
 	ent->flags |= ent->client->pers.savedFlags;
 	if (coop->value)
 		ent->client->resp.score = ent->client->pers.score;
