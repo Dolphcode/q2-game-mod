@@ -1246,6 +1246,52 @@ gitem_t	itemlist[] =
 		/* precache */ ""
 			},
 
+	/*QUAKED item_hearty_meat (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_hearty_meat",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_hearty",
+		/* pickup */	"Hearty Meat",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+			},
+
+		/*QUAKED item_gourmet_meat (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_gourmet_meat",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_gourmet",
+		/* pickup */	"Gourmet Meat",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+	},
+
 	/*QUAKED item_iv_drip (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
