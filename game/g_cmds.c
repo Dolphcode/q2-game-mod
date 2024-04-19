@@ -417,10 +417,35 @@ void Cmd_Use_f (edict_t *ent)
 		gi.cprintf (ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
 	}
-	else if (!Q_stricmp(s, ent->client->pers.weapon->pickup_name))
+
+	/* Double tap blaster to cycle through items
+	*  1. Axe
+	*  2. Pickaxe
+	*  3. Torch
+	*/
+
+	else if (!Q_stricmp(s, ent->client->pers.weapon->pickup_name) || !Q_stricmp(s, "Blaster"))
 	{
-		if (!Q_stricmp(s, "Blaster")) {
-			it = FindItem("Shotgun");
+		int flag;
+		char* w;
+
+		w = ent->client->pers.weapon->pickup_name;
+
+		flag = (((!Q_stricmp(w, "Rocket Launcher") << 1) + !Q_stricmp(w, "Shotgun")) << 1) + !Q_stricmp(w, "Blaster");
+		gi.cprintf(ent, PRINT_HIGH, "%s %s %i\n", s, w, flag);
+
+		if (flag) {
+
+			it = FindItem("Blaster");
+
+			gi.cprintf(ent, PRINT_HIGH, "%i %i", ent->client->pers.inventory[ITEM_INDEX(FindItem("Shells"))], ent->client->pers.inventory[ITEM_INDEX(FindItem("Rockets"))]);
+
+			if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Shotgun"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("Shells"))] && flag < 0b10) {
+				it = FindItem("Shotgun");
+			}
+			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Rocket Launcher"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("Rockets"))] && flag < 0b100) {
+				it = FindItem("Rocket Launcher");
+			}
 
 		}
 
