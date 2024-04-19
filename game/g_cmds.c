@@ -417,6 +417,14 @@ void Cmd_Use_f (edict_t *ent)
 		gi.cprintf (ent, PRINT_HIGH, "Out of item: %s\n", s);
 		return;
 	}
+	else if (!Q_stricmp(s, ent->client->pers.weapon->pickup_name))
+	{
+		if (!Q_stricmp(s, "Blaster")) {
+			it = FindItem("Shotgun");
+
+		}
+
+	}
 
 	it->use (ent, it);
 }
