@@ -932,6 +932,8 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 
+// ===================================================
+
 /*
 =================
 MOD ADDITION - PrintPlayerStats
@@ -946,6 +948,32 @@ void Cmd_PrintPlayerStats_f(edict_t* ent) {
 			ent->temperature,
 			ent->mightiness);
 	}
+}
+
+/*
+=================
+MOD ADDITION - PrintPlayerStats
+=================
+*/
+void Cmd_SpawnResource_f(edict_t* ent) {
+	edict_t* e;
+	vec3_t v = { 0, 0, 0 };
+	vec3_t forward;
+
+	AngleVectors(ent->s.angles, forward, NULL, NULL);
+
+	VectorCopy(forward, v);
+
+	e = G_Spawn();
+
+	v[0] *= 100;
+	v[1] *= 100;
+	v[2] *= 100;
+
+	VectorAdd(ent->s.origin, v, v);
+	VectorCopy(v, e->s.origin);
+
+	SP_resource_rock(e);
 }
 
 
@@ -1038,6 +1066,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_PlayerList_f(ent);
 	else if (Q_stricmp(cmd, "printstats") == 0)
 		Cmd_PrintPlayerStats_f(ent);
+	else if (Q_stricmp(cmd, "spawnresource") == 0)
+		Cmd_SpawnResource_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

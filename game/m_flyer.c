@@ -624,3 +624,119 @@ void SP_monster_flyer (edict_t *self)
 
 	flymonster_start (self);
 }
+
+/* MOD ADDITION: STONE RESOURCE
+*  - I hijacked the flyer to turn it into a rock since this looked quite similar to a rock
+* 
+* For this implementation I need
+*  - A custom die command to make this guy drop stone
+*  - A custom pain command so that the flyer doesn't react to being shot at
+*  - A custom spawn command to spawn the rock
+*/
+
+void rock_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+{
+	gi.sound(self, CHAN_VOICE, sound_die, 1, ATTN_NORM, 0);
+	//BecomeExplosion1(self);
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Stone");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
+
+	G_FreeEdict(self);
+}
+
+mmove_t rock_move_pain = { FRAME_pain101, FRAME_pain109, flyer_frames_pain1, flyer_stand };
+
+void rock_pain(edict_t* self, edict_t* other, float kick, int damage)
+{
+	int		n;
+
+	if (self->health < (self->max_health / 2))
+		self->s.skinnum = 1;
+
+	if (level.time < self->pain_debounce_time)
+		return;
+
+	/* It's just a rock, I don't really care if it pains or not in nightmare
+	self->pain_debounce_time = level.time + 3;
+	if (skill->value == 3)
+		return;		// no pain anims in nightmare
+		*/
+
+	n = rand() % 3;
+	if (n == 0)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+	}
+	else if (n == 1)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain2, 1, ATTN_NORM, 0);
+	}
+	else
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+	}
+	self->monsterinfo.currentmove = &rock_move_pain;
+}
+
+/*QUAKED monster_flyer (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
+*/
+void SP_resource_rock(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	// fix a map bug in jail5.bsp
+	if (!Q_stricmp(level.mapname, "jail5") && (self->s.origin[2] == -104))
+	{
+		self->targetname = self->target;
+		self->target = NULL;
+	}
+
+	sound_sight = gi.soundindex("flyer/flysght1.wav");
+	sound_idle = gi.soundindex("flyer/flysrch1.wav");
+	sound_pain1 = gi.soundindex("flyer/flypain1.wav");
+	sound_pain2 = gi.soundindex("flyer/flypain2.wav");
+	sound_slash = gi.soundindex("flyer/flyatck2.wav");
+	sound_sproing = gi.soundindex("flyer/flyatck1.wav");
+	sound_die = gi.soundindex("flyer/flydeth1.wav");
+
+	gi.soundindex("flyer/flyatck3.wav");
+
+	self->s.modelindex = gi.modelindex("models/monsters/flyer/tris.md2");
+	VectorSet(self->mins, -16, -16, -24);
+	VectorSet(self->maxs, 16, 16, 32);
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+
+	self->s.sound = gi.soundindex("flyer/flyidle1.wav");
+
+	self->health = 50;
+	self->mass = 50;
+
+	self->pain = rock_pain;
+	self->die = rock_die;
+
+	self->monsterinfo.stand = flyer_stand;
+	self->monsterinfo.walk = flyer_stand;
+	self->monsterinfo.run = flyer_stand;
+	self->monsterinfo.attack = flyer_stand;
+	self->monsterinfo.melee = flyer_stand;
+	self->monsterinfo.sight = flyer_stand;
+	self->monsterinfo.idle = flyer_stand;
+
+	gi.linkentity(self);
+
+	self->monsterinfo.currentmove = &flyer_move_stand;
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	flymonster_start(self);
+}
