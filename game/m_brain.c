@@ -674,3 +674,145 @@ void SP_monster_brain (edict_t *self)
 
 	walkmonster_start (self);
 }
+
+/* MOD ADDITION: WOOD RESOURCE
+*  - I hijacked the brain to turn it into a rock since this looked quite similar to a tree
+*
+* For this implementation I need
+*  - A custom die command to make this guy drop wood
+*  - A custom pain command so that the brain doesn't react to being shot at
+*  - A custom spawn command to spawn the tree
+*/
+
+void tree_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+{
+	int		n;
+
+	self->s.effects = 0;
+	self->monsterinfo.power_armor_type = POWER_ARMOR_NONE;
+
+	// check for gib
+	if (self->health <= self->gib_health)
+	{
+		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
+		for (n = 0; n < 2; n++)
+			ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC);
+		for (n = 0; n < 4; n++)
+			ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
+		ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC);
+		self->deadflag = DEAD_DEAD;
+		return;
+	}
+
+	if (self->deadflag == DEAD_DEAD)
+		return;
+
+	// regular death
+	gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NORM, 0);
+	self->deadflag = DEAD_DEAD;
+	self->takedamage = DAMAGE_YES;
+	if (random() <= 0.5)
+		self->monsterinfo.currentmove = &brain_move_death1;
+	else
+		self->monsterinfo.currentmove = &brain_move_death2;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Wood");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
+
+	G_FreeEdict(self);
+}
+
+mmove_t tree_move_pain = { FRAME_pain101, FRAME_pain121, brain_frames_pain1, brain_stand };
+
+void tree_pain(edict_t* self, edict_t* other, float kick, int damage)
+{
+	float	r;
+
+	if (self->health < (self->max_health / 2))
+		self->s.skinnum = 1;
+
+	if (level.time < self->pain_debounce_time)
+		return;
+
+	/*
+	self->pain_debounce_time = level.time + 3;
+	if (skill->value == 3)
+		return;		// no pain anims in nightmare
+	*/
+
+	r = random();
+	if (r < 0.33)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+	}
+	else if (r < 0.66)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain2, 1, ATTN_NORM, 0);
+	}
+	else
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+	}
+	self->monsterinfo.currentmove = &tree_move_pain;
+}
+
+/*QUAKED monster_brain (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
+*/
+void SP_resource_tree(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	sound_chest_open = gi.soundindex("brain/brnatck1.wav");
+	sound_tentacles_extend = gi.soundindex("brain/brnatck2.wav");
+	sound_tentacles_retract = gi.soundindex("brain/brnatck3.wav");
+	sound_death = gi.soundindex("brain/brndeth1.wav");
+	sound_idle1 = gi.soundindex("brain/brnidle1.wav");
+	sound_idle2 = gi.soundindex("brain/brnidle2.wav");
+	sound_idle3 = gi.soundindex("brain/brnlens1.wav");
+	sound_pain1 = gi.soundindex("brain/brnpain1.wav");
+	sound_pain2 = gi.soundindex("brain/brnpain2.wav");
+	sound_sight = gi.soundindex("brain/brnsght1.wav");
+	sound_search = gi.soundindex("brain/brnsrch1.wav");
+	sound_melee1 = gi.soundindex("brain/melee1.wav");
+	sound_melee2 = gi.soundindex("brain/melee2.wav");
+	sound_melee3 = gi.soundindex("brain/melee3.wav");
+
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+	self->s.modelindex = gi.modelindex("models/monsters/brain/tris.md2");
+	VectorSet(self->mins, -16, -16, -24);
+	VectorSet(self->maxs, 16, 16, 32);
+
+	self->health = 300;
+	self->gib_health = -150;
+	self->mass = 400;
+
+	self->pain = tree_pain;
+	self->die = tree_die;
+
+	self->monsterinfo.stand = brain_stand;
+	self->monsterinfo.walk = brain_stand;
+	self->monsterinfo.run = brain_stand;
+	self->monsterinfo.dodge = brain_stand;
+	//	self->monsterinfo.attack = brain_attack;
+	self->monsterinfo.melee = brain_stand;
+	self->monsterinfo.sight = brain_stand;
+	self->monsterinfo.search = brain_stand;
+	self->monsterinfo.idle = brain_stand;
+
+	gi.linkentity(self);
+
+	self->monsterinfo.currentmove = &brain_move_stand;
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	walkmonster_start(self);
+}

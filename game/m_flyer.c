@@ -697,7 +697,7 @@ void SP_resource_rock(edict_t* self)
 	// fix a map bug in jail5.bsp
 	if (!Q_stricmp(level.mapname, "jail5") && (self->s.origin[2] == -104))
 	{
-		self->targetname = self->target;
+		self->targetname = self->target; // Consider storing enemy type in targetname
 		self->target = NULL;
 	}
 

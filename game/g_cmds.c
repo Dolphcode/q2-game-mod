@@ -973,7 +973,17 @@ void Cmd_SpawnResource_f(edict_t* ent) {
 	VectorAdd(ent->s.origin, v, v);
 	VectorCopy(v, e->s.origin);
 
-	SP_resource_rock(e);
+	gi.cprintf(ent, PRINT_HIGH, "%s\n", gi.args());
+
+	if (!Q_stricmp(gi.args(), "stone")) {
+		SP_resource_rock(e);
+	}
+	else if (!Q_stricmp(gi.args(), "tree")) {
+		SP_resource_tree(e);
+	}
+	else {
+		SP_resource_tree(e);
+	}
 }
 
 
