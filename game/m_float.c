@@ -661,3 +661,114 @@ void SP_monster_floater (edict_t *self)
 
 	flymonster_start (self);
 }
+
+/* MOD ADDITION: MARBLE RESOURCE
+*  - I hijacked the float to turn it into a marble gatherable since this looked cube-ish
+*
+* For this implementation I need
+*  - A custom die command to make this guy drop marble
+*  - A custom pain command so that the float doesn't react to being shot at
+*  - A custom spawn command to spawn the tree
+*/
+
+void marble_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+{
+	gi.sound(self, CHAN_VOICE, sound_death1, 1, ATTN_NORM, 0);
+	//BecomeExplosion1(self);
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Marble");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
+
+	G_FreeEdict(self);
+}
+
+mmove_t marble_move_pain = { FRAME_pain101, FRAME_pain107, floater_frames_pain1, floater_stand };
+
+void marble_pain(edict_t* self, edict_t* other, float kick, int damage)
+{
+	int		n;
+
+	if (self->health < (self->max_health / 2))
+		self->s.skinnum = 1;
+
+	if (level.time < self->pain_debounce_time)
+		return;
+
+	/*
+	self->pain_debounce_time = level.time + 3;
+	if (skill->value == 3)
+		return;		// no pain anims in nightmare
+	*/
+
+	n = (rand() + 1) % 3;
+	if (n == 0)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+	}
+	else
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain2, 1, ATTN_NORM, 0);
+	}
+	self->monsterinfo.currentmove = &marble_move_pain;
+}
+
+/*QUAKED monster_floater (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
+*/
+void SP_resource_marble(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	sound_attack2 = gi.soundindex("floater/fltatck2.wav");
+	sound_attack3 = gi.soundindex("floater/fltatck3.wav");
+	sound_death1 = gi.soundindex("floater/fltdeth1.wav");
+	sound_idle = gi.soundindex("floater/fltidle1.wav");
+	sound_pain1 = gi.soundindex("floater/fltpain1.wav");
+	sound_pain2 = gi.soundindex("floater/fltpain2.wav");
+	sound_sight = gi.soundindex("floater/fltsght1.wav");
+
+	gi.soundindex("floater/fltatck1.wav");
+
+	self->s.sound = gi.soundindex("floater/fltsrch1.wav");
+
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+	self->s.modelindex = gi.modelindex("models/monsters/float/tris.md2");
+	VectorSet(self->mins, -24, -24, -24);
+	VectorSet(self->maxs, 24, 24, 32);
+
+	self->health = 50;
+	self->gib_health = -80;
+	self->mass = 300;
+
+	self->pain = marble_pain;
+	self->die = marble_die;
+
+	self->monsterinfo.stand = floater_stand;
+	self->monsterinfo.walk = floater_stand;
+	self->monsterinfo.run = floater_stand;
+	//	self->monsterinfo.dodge = floater_dodge;
+	self->monsterinfo.attack = floater_stand;
+	self->monsterinfo.melee = floater_stand;
+	self->monsterinfo.sight = floater_stand;
+	self->monsterinfo.idle = floater_stand;
+
+	gi.linkentity(self);
+
+	if (random() <= 0.5)
+		self->monsterinfo.currentmove = &floater_move_stand1;
+	else
+		self->monsterinfo.currentmove = &floater_move_stand2;
+
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	flymonster_start(self);
+}

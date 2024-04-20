@@ -981,6 +981,9 @@ void Cmd_SpawnResource_f(edict_t* ent) {
 	else if (!Q_stricmp(gi.args(), "tree")) {
 		SP_resource_tree(e);
 	}
+	else if (!Q_stricmp(gi.args(), "marble")) {
+		SP_resource_marble(e);
+	}
 	else {
 		SP_resource_tree(e);
 	}
