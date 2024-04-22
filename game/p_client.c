@@ -1625,24 +1625,51 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	if (ent->frametime >= 8.3) {
 
 		daycycle = ent->lifetime % 15;
-		if (daycycle < 10) {
-			gi.configstring(CS_SKY, "unit1_");
-		} else if (daycycle < 5) {
-			gi.configstring(CS_SKY, "space1");
+		if (daycycle < 5) {
+			gi.AddCommandString("sky day_");
+
+			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can change temperature
+				if (ent->client->pers.inventory[ent->client->ammo_index] && !Q_stricmp(GetItemByIndex(ent->client->ammo_index)->pickup_name, "TorchUses")) {
+					if (!((int)dmflags->value & DF_INFINITE_AMMO))
+						ent->client->pers.inventory[ent->client->ammo_index]--;
+					ent->temperature += 10;
+				}
+			}
+		} else if (daycycle < 10) {
+			gi.AddCommandString("sky unit1_");
+
+			if (ent->lifetime % 2 == 0) { // Every 2 seconds drop sanity
+				ent->sanity -= 5;
+			}
+
+			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can change temperature
+				if (ent->client->pers.inventory[ent->client->ammo_index] && !Q_stricmp(GetItemByIndex(ent->client->ammo_index)->pickup_name, "TorchUses")) {
+					if (!((int)dmflags->value & DF_INFINITE_AMMO))
+						ent->client->pers.inventory[ent->client->ammo_index]--;
+					ent->temperature += 10;
+				}
+				else {
+					ent->temperature -= 5;
+				}
+			}
 		}
 		else {
-			gi.configstring(CS_SKY, "day_");
-		}
+			gi.AddCommandString("sky space1");
 
-		if (GetItemByIndex(ent->client->ammo_index))
-			gi.cprintf(ent, PRINT_HIGH, "%s", GetItemByIndex(ent->client->ammo_index)->pickup_name);
-		else
-			gi.cprintf(ent, PRINT_HIGH, "thing");
-
-		if (ent->lifetime % 4 == 0 && ent->client->pers.inventory[ent->client->ammo_index] && !Q_stricmp(GetItemByIndex(ent->client->ammo_index)->pickup_name, "TorchUses")) {
-			if (!((int)dmflags->value & DF_INFINITE_AMMO))
-				ent->client->pers.inventory[ent->client->ammo_index]--;
-			ent->temperature += 10;
+			if (ent->lifetime % 2 == 0) { // Every 2 seconds drop sanity
+				ent->sanity -= 10;
+			}
+			
+			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can temperature
+				if (ent->client->pers.inventory[ent->client->ammo_index] && !Q_stricmp(GetItemByIndex(ent->client->ammo_index)->pickup_name, "TorchUses")) {
+					if (!((int)dmflags->value & DF_INFINITE_AMMO))
+						ent->client->pers.inventory[ent->client->ammo_index]--;
+					ent->temperature += 10;
+				}
+				else {
+					ent->temperature -= 10;
+				}
+			}
 		}
 
 
@@ -1651,10 +1678,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 		if (ent->lifetime % 2 == 0) {
 			ent->hunger -= 1;
-			ent->sanity -= 1;
 		}
 
-		ent->temperature -= 1;
 		ent->mightiness -= 1;
 		ent->stamina += 1;
 
