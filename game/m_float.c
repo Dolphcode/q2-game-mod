@@ -745,7 +745,7 @@ void SP_resource_marble(edict_t* self)
 	VectorSet(self->mins, -24, -24, -24);
 	VectorSet(self->maxs, 24, 24, 32);
 
-	self->health = 50;
+	self->health = 40;
 	self->gib_health = -80;
 	self->mass = 300;
 

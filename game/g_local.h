@@ -1149,14 +1149,14 @@ struct edict_s
 *  - I was a fool for thinking I could put this in its own file
 */
 
-#define PICKAXE_NORMAL_DAMAGE 20
-#define PICKAXE_DEATHMATCH_DAMAGE 20
+#define PICKAXE_NORMAL_DAMAGE 10
+#define PICKAXE_DEATHMATCH_DAMAGE 10
 #define PICKAXE_KICK 0
 #define PICKAXE_DURABILITY 30 // Number of uses added when the craft command is performed
 #define PICKAXE_RANGE 64
 
-#define AXE_NORMAL_DAMAGE 20
-#define AXE_DEATHMATCH_DAMAGE 20
+#define AXE_NORMAL_DAMAGE 10
+#define AXE_DEATHMATCH_DAMAGE 10
 #define AXE_KICK 0
 #define AXE_DURABILITY 30 // Number of uses added when the craft command is performed
 #define AXE_RANGE 64
@@ -1185,7 +1185,5 @@ void Weapon_Axe_Fire(edict_t* ent);
 void Weapon_Axe(edict_t* ent);
 
 // Torch methods
-void fire_torch(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
-void torch_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Torch_Fire(edict_t* ent);
 void Weapon_Torch(edict_t* ent);

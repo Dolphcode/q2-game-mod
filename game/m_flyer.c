@@ -719,7 +719,7 @@ void SP_resource_rock(edict_t* self)
 
 	self->s.sound = gi.soundindex("flyer/flyidle1.wav");
 
-	self->health = 50;
+	self->health = 40;
 	self->mass = 50;
 
 	self->pain = rock_pain;

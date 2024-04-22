@@ -1616,11 +1616,23 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	int		i, j;
 	pmove_t	pm;
 
+	int daycycle;
+
 	level.current_entity = ent;
 	client = ent->client;
 
 	ent->frametime += FRAMETIME;
 	if (ent->frametime >= 8.3) {
+
+		daycycle = ent->lifetime % 15;
+		if (daycycle < 10) {
+			gi.configstring(CS_SKY, "unit1_");
+		} else if (daycycle < 5) {
+			gi.configstring(CS_SKY, "space1");
+		}
+		else {
+			gi.configstring(CS_SKY, "day_");
+		}
 
 		if (GetItemByIndex(ent->client->ammo_index))
 			gi.cprintf(ent, PRINT_HIGH, "%s", GetItemByIndex(ent->client->ammo_index)->pickup_name);
