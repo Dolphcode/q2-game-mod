@@ -1649,3 +1649,9 @@ void Weapon_Axe(edict_t* ent)
 
 	Weapon_Generic(ent, 3, 18, 56, 61, pause_frames, fire_frames, Weapon_Axe_Fire);
 }
+
+void Weapon_Torch(edict_t* ent)
+{
+
+	ent->temperature += 1;
+}

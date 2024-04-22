@@ -1179,3 +1179,4 @@ void fire_axe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void axe_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Axe_Fire(edict_t* ent);
 void Weapon_Axe(edict_t* ent);
+void Weapon_Torch(edict_t* ent);

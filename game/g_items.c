@@ -1434,6 +1434,27 @@ gitem_t	itemlist[] =
 				/* precache */ ""
 	},
 
+	{
+		"tool_torch",
+		Pickup_Weapon,
+		Use_Weapon,
+		NULL,
+		Weapon_Torch,
+		"misc/w_pkup.wav",
+		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
+		"models/weapons/v_bfg/tris.md2",
+		/* icon */		"w_bfg",
+		/* pickup */	"Torch",
+				0,
+				1,
+				"PickaxeUses",
+				IT_WEAPON,
+				WEAP_BFG,
+				NULL,
+				0,
+				/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+	},
+
 
 	//
 	// ARMOR
