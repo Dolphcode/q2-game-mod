@@ -1347,6 +1347,50 @@ gitem_t	itemlist[] =
 	/*QUAKED tool_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
+		"tool_axe",
+		Pickup_Weapon,
+		Use_Weapon,
+		NULL,
+		Weapon_Axe,
+		"misc/w_pkup.wav",
+		"models/weapons/g_rail/tris.md2", EF_ROTATE,
+		"models/weapons/v_rail/tris.md2",
+		/* icon */		"w_railgun",
+		/* pickup */	"Axe",
+				0,
+				1,
+				"AxeUses",
+				IT_WEAPON,
+				WEAP_RAILGUN,
+				NULL,
+				0,
+				/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+	},
+
+	/*QUAKED uses_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"uses_axe",
+		Pickup_Ammo,
+		NULL,
+		NULL,
+		NULL,
+		"misc/am_pkup.wav",
+		"models/items/ammo/cells/medium/tris.md2", 0,
+		NULL,
+		/* icon */		"a_cells",
+		/* pickup */	"AxeUses",
+		/* width */		3,
+				10,
+				NULL,
+				IT_AMMO,
+				0,
+				NULL,
+				6,
+				/* precache */ ""
+	},
+
+	{
 		"tool_pickaxe",
 		Pickup_Weapon,
 		Use_Weapon,

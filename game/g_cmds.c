@@ -443,8 +443,8 @@ void Cmd_Use_f (edict_t *ent)
 			if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Pickaxe"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("PickaxeUses"))] && flag < 0b10) {
 				it = FindItem("Pickaxe");
 			}
-			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Rocket Launcher"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("Rockets"))] && flag < 0b100) {
-				it = FindItem("Rocket Launcher");
+			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Axe"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("AxeUses"))] && flag < 0b100) {
+				it = FindItem("Axe");
 			}
 
 		}

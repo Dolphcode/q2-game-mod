@@ -1155,7 +1155,7 @@ struct edict_s
 #define AXE_DEATHMATCH_DAMAGE 20
 #define AXE_KICK 0
 #define AXE_DURABILITY 30 // Number of uses added when the craft command is performed
-#define AXE_RANGE 5
+#define AXE_RANGE 64
 
 #define DUMBBELL_NORMAL_DAMAGE 100
 #define DUMBBELL_DEATHMATCH_DAMAGE 20
@@ -1173,3 +1173,9 @@ void fire_pickaxe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int ki
 void pickaxe_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Pickaxe_Fire(edict_t* ent);
 void Weapon_Pickaxe(edict_t* ent);
+
+// Axe methods
+void fire_axe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void axe_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_Axe_Fire(edict_t* ent);
+void Weapon_Axe(edict_t* ent);
