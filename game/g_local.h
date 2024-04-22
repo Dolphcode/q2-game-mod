@@ -1185,4 +1185,7 @@ void Weapon_Axe_Fire(edict_t* ent);
 void Weapon_Axe(edict_t* ent);
 
 // Torch methods
+void fire_torch(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void torch_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_Torch_Fire(edict_t* ent);
 void Weapon_Torch(edict_t* ent);

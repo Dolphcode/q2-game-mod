@@ -1441,18 +1441,41 @@ gitem_t	itemlist[] =
 		NULL,
 		Weapon_Torch,
 		"misc/w_pkup.wav",
-		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
-		"models/weapons/v_bfg/tris.md2",
-		/* icon */		"w_bfg",
+		"models/weapons/g_launch/tris.md2", EF_ROTATE,
+		"models/weapons/v_launch/tris.md2",
+		/* icon */		"w_glauncher",
 		/* pickup */	"Torch",
 				0,
 				1,
-				"PickaxeUses",
+				"TorchUses",
 				IT_WEAPON,
-				WEAP_BFG,
+				WEAP_GRENADELAUNCHER,
 				NULL,
 				0,
 				/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+	},
+
+	/*QUAKED uses_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"uses_torch",
+		Pickup_Ammo,
+		NULL,
+		NULL,
+		NULL,
+		"misc/am_pkup.wav",
+		"models/items/ammo/cells/medium/tris.md2", 0,
+		NULL,
+		/* icon */		"a_cells",
+		/* pickup */	"TorchUses",
+		/* width */		3,
+				50,
+				NULL,
+				IT_AMMO,
+				0,
+				NULL,
+				6,
+				/* precache */ ""
 	},
 
 

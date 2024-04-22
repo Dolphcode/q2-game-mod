@@ -1619,6 +1619,35 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	level.current_entity = ent;
 	client = ent->client;
 
+	ent->frametime += FRAMETIME;
+	if (ent->frametime >= 8.3) {
+
+		if (GetItemByIndex(ent->client->ammo_index))
+			gi.cprintf(ent, PRINT_HIGH, "%s", GetItemByIndex(ent->client->ammo_index)->pickup_name);
+		else
+			gi.cprintf(ent, PRINT_HIGH, "thing");
+
+		if (ent->lifetime % 4 == 0 && ent->client->pers.inventory[ent->client->ammo_index] && !Q_stricmp(GetItemByIndex(ent->client->ammo_index)->pickup_name, "TorchUses")) {
+			if (!((int)dmflags->value & DF_INFINITE_AMMO))
+				ent->client->pers.inventory[ent->client->ammo_index]--;
+			ent->temperature += 10;
+		}
+
+
+		ent->frametime = 0.0;
+		ent->lifetime += 1;
+
+		if (ent->lifetime % 2 == 0) {
+			ent->hunger -= 1;
+			ent->sanity -= 1;
+		}
+
+		ent->temperature -= 1;
+		ent->mightiness -= 1;
+		ent->stamina += 1;
+
+	}
+
 	if (level.intermissiontime)
 	{
 		client->ps.pmove.pm_type = PM_FREEZE;
@@ -1782,22 +1811,6 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		other = g_edicts + i;
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
-	}
-
-	ent->frametime += FRAMETIME;
-	if (ent->frametime >= 8.3) {
-		ent->frametime = 0.0;
-		ent->lifetime += 1;
-
-		if (ent->lifetime % 2 == 0) {
-			ent->hunger -= 1;
-			ent->sanity -= 1;
-		}
-
-		ent->temperature -= 1;
-		ent->mightiness -= 1;
-		ent->stamina += 1;
-
 	}
 }
 
