@@ -1603,6 +1603,23 @@ void PrintPmove (pmove_t *pm)
 
 /*
 ==============
+CheckStat
+
+Check if a stat is over or under
+==============
+*/
+void CheckStat(int* stat) {
+	if (*stat > 100) {
+		*stat = 100;
+	}
+	else if (*stat < 0) {
+		*stat = 0;
+	}
+}
+
+
+/*
+==============
 ClientThink
 
 This will be called once for each client frame, which will
@@ -1683,6 +1700,11 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		ent->mightiness -= 1;
 		ent->stamina += 1;
 
+		CheckStat(&(ent->hunger));
+		CheckStat(&(ent->sanity));
+		CheckStat(&(ent->temperature));
+		CheckStat(&(ent->stamina));
+		CheckStat(&(ent->mightiness));
 	}
 
 	if (level.intermissiontime)
