@@ -639,6 +639,8 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.stamina		= 100;
 	client->pers.temperature	= 100;
 	client->pers.mightiness		= 100;
+	client->pers.lifetime		= 0;
+	client->pers.frametime		= 0.0;
 
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
@@ -680,6 +682,13 @@ void SaveClientData (void)
 			continue;
 		game.clients[i].pers.health = ent->health;
 		game.clients[i].pers.max_health = ent->max_health;
+		game.clients[i].pers.sanity = ent->sanity;
+		game.clients[i].pers.hunger = ent->hunger;
+		game.clients[i].pers.stamina = ent->stamina;
+		game.clients[i].pers.temperature = ent->temperature;
+		game.clients[i].pers.mightiness = ent->mightiness;
+		game.clients[i].pers.lifetime = ent->lifetime;
+		game.clients[i].pers.frametime = ent->frametime;
 		game.clients[i].pers.savedFlags = (ent->flags & (FL_GODMODE|FL_NOTARGET|FL_POWER_ARMOR));
 		if (coop->value)
 			game.clients[i].pers.score = ent->client->resp.score;
@@ -699,6 +708,8 @@ void FetchClientEntData (edict_t *ent)
 	ent->temperature = ent->client->pers.temperature;
 	ent->stamina = ent->client->pers.stamina;
 	ent->mightiness = ent->client->pers.mightiness;
+	ent->lifetime = ent->client->pers.lifetime;
+	ent->frametime = ent->client->pers.frametime;
 
 	ent->flags |= ent->client->pers.savedFlags;
 	if (coop->value)
@@ -1771,6 +1782,22 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		other = g_edicts + i;
 		if (other->inuse && other->client->chase_target == ent)
 			UpdateChaseCam(other);
+	}
+
+	ent->frametime += FRAMETIME;
+	if (ent->frametime >= 8.3) {
+		ent->frametime = 0.0;
+		ent->lifetime += 1;
+
+		if (ent->lifetime % 2 == 0) {
+			ent->hunger -= 1;
+			ent->sanity -= 1;
+		}
+
+		ent->temperature -= 1;
+		ent->mightiness -= 1;
+		ent->stamina += 1;
+
 	}
 }
 

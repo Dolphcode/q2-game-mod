@@ -352,7 +352,7 @@ void HelpComputer (edict_t *ent)
 		"xv 0 yv 146 cstring2 \"%s\" "		// help 1
 		"xv 0 yv 202 cstring2 \"%s\" "		// help 2
 		"xv 50 yv 256 string2 \" kills     score    hi-score\" "
-		"xv 50 yv 264 string2 \" %3i      %i/%i       %i/%i\" ",
+		"xv 50 yv 264 string2 \" %3i       %3i       %i/%i\" ",
 		ent->hunger,
 		ent->sanity,
 		ent->stamina,
@@ -363,7 +363,7 @@ void HelpComputer (edict_t *ent)
 		"Survive for as long as possible",
 		"Beat your high score",
 		level.killed_monsters,
-		level.found_goals, level.total_goals,
+		ent->lifetime,
 		level.found_secrets, level.total_secrets);
 
 	gi.WriteByte (svc_layout);

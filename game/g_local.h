@@ -854,6 +854,8 @@ typedef struct
 	int			stamina;
 	int			temperature;
 	int			mightiness;
+	int			lifetime;
+	float		frametime;
 
 	int			selected_item;
 	int			inventory[MAX_ITEMS];
@@ -1086,6 +1088,8 @@ struct edict_s
 	int			stamina;
 	int			temperature;
 	int			mightiness;
+	int			lifetime;
+	float		frametime;
 
 	float		powerarmor_time;
 
@@ -1179,4 +1183,6 @@ void fire_axe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void axe_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Axe_Fire(edict_t* ent);
 void Weapon_Axe(edict_t* ent);
+
+// Torch methods
 void Weapon_Torch(edict_t* ent);
