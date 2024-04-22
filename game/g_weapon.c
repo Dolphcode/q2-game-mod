@@ -143,7 +143,7 @@ static void fire_lead (edict_t *self, vec3_t start, vec3_t aimdir, int damage, i
 	qboolean	water = false;
 	int			content_mask = MASK_SHOT | MASK_WATER;
 
-	tr = gi.trace (self->s.origin, NULL, NULL, start, self, MASK_SHOT);
+	tr = gi.trace (self->s.origin, NULL, NULL, start, self, MASK_SHOT); // stops you from shooting into the wall
 	if (!(tr.fraction < 1.0))
 	{
 		vectoangles (aimdir, dir);

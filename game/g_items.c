@@ -464,12 +464,14 @@ qboolean Add_Ammo (edict_t *ent, gitem_t *item, int count)
 		max = ent->client->pers.max_cells;
 	else if (item->tag == AMMO_SLUGS)
 		max = ent->client->pers.max_slugs;
+	else if (item->tag == 6)
+		max = 1000;
 	else
 		return false;
 
 	index = ITEM_INDEX(item);
 
-	if (ent->client->pers.inventory[index] == max)
+	if (ent->client->pers.inventory[index] == max && !item->tag == 6)
 		return false;
 
 	ent->client->pers.inventory[index] += count;
@@ -485,7 +487,6 @@ qboolean Pickup_Ammo (edict_t *ent, edict_t *other)
 	int			oldcount;
 	int			count;
 	qboolean	weapon;
-
 	weapon = (ent->item->flags & IT_WEAPON);
 	if ( (weapon) && ( (int)dmflags->value & DF_INFINITE_AMMO ) )
 		count = 1000;
@@ -507,6 +508,7 @@ qboolean Pickup_Ammo (edict_t *ent, edict_t *other)
 
 	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) && (deathmatch->value))
 		SetRespawn (ent, 30);
+
 	return true;
 }
 
@@ -1336,6 +1338,56 @@ gitem_t	itemlist[] =
 		NULL,
 		0,
 		/* precache */ ""
+	},
+
+	//
+	// MOD ADDITION - CUSTOM TOOLS
+	//
+
+	/*QUAKED tool_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"tool_pickaxe",
+		Pickup_Weapon,
+		Use_Weapon,
+		NULL,
+		Weapon_Pickaxe,
+		"misc/w_pkup.wav",
+		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
+		"models/weapons/v_bfg/tris.md2",
+		/* icon */		"w_bfg",
+		/* pickup */	"Pickaxe",
+				0,
+				1,
+				"PickaxeUses",
+				IT_WEAPON,
+				WEAP_BFG,
+				NULL,
+				0,
+				/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+	},
+
+	/*QUAKED uses_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"uses_pickaxe",
+		Pickup_Ammo,
+		NULL,
+		NULL,
+		NULL,
+		"misc/am_pkup.wav",
+		"models/items/ammo/cells/medium/tris.md2", 0,
+		NULL,
+		/* icon */		"a_cells",
+		/* pickup */	"PickaxeUses",
+		/* width */		3,
+				10,
+				NULL,
+				IT_AMMO,
+				0,
+				NULL,
+				6,
+				/* precache */ ""
 	},
 
 

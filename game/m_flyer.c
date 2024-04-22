@@ -738,5 +738,8 @@ void SP_resource_rock(edict_t* self)
 	self->monsterinfo.currentmove = &flyer_move_stand;
 	self->monsterinfo.scale = MODEL_SCALE;
 
+	self->classname = "mineable";
+	self->takedamage = 0;
+
 	flymonster_start(self);
 }

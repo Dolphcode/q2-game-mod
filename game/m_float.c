@@ -770,5 +770,8 @@ void SP_resource_marble(edict_t* self)
 
 	self->monsterinfo.scale = MODEL_SCALE;
 
+	self->classname = "mineable";
+	self->takedamage = 0;
+
 	flymonster_start(self);
 }

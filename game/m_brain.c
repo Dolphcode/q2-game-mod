@@ -814,5 +814,8 @@ void SP_resource_tree(edict_t* self)
 	self->monsterinfo.currentmove = &brain_move_stand;
 	self->monsterinfo.scale = MODEL_SCALE;
 
+	self->classname = "choppable";
+	self->takedamage = 0;
+
 	walkmonster_start(self);
 }

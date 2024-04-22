@@ -987,6 +987,8 @@ struct edict_s
 	qboolean	inuse;
 	int			linkcount;
 
+
+
 	// FIXME: move these fields to a server private sv_entity_t
 	link_t		area;				// linked to a division node or leaf
 	
@@ -1139,3 +1141,35 @@ struct edict_s
 	monsterinfo_t	monsterinfo;
 };
 
+/* MOD ADDITIOMS
+*  - I was a fool for thinking I could put this in its own file
+*/
+
+#define PICKAXE_NORMAL_DAMAGE 20
+#define PICKAXE_DEATHMATCH_DAMAGE 20
+#define PICKAXE_KICK 0
+#define PICKAXE_DURABILITY 30 // Number of uses added when the craft command is performed
+#define PICKAXE_RANGE 64
+
+#define AXE_NORMAL_DAMAGE 20
+#define AXE_DEATHMATCH_DAMAGE 20
+#define AXE_KICK 0
+#define AXE_DURABILITY 30 // Number of uses added when the craft command is performed
+#define AXE_RANGE 5
+
+#define DUMBBELL_NORMAL_DAMAGE 100
+#define DUMBBELL_DEATHMATCH_DAMAGE 20
+#define DUMBBELL_KICK 0
+#define DUMBBELL_DURABILITY 30 // Number of uses added when the craft command is performed
+#define DUMBBELL_RANGE 5
+
+#define TORCH_NORMAL_DAMAGE 100
+#define TORCH_DEATHMATCH_DAMAGE 20
+#define TORCH_KICK 0
+#define TORCH_DURABILITY 30 // Number of uses added when the craft command is performed
+
+// Pickaxe methods
+void fire_pickaxe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void pickaxe_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_Pickaxe_Fire(edict_t* ent);
+void Weapon_Pickaxe(edict_t* ent);

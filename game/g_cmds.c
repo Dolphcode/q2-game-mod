@@ -431,17 +431,17 @@ void Cmd_Use_f (edict_t *ent)
 
 		w = ent->client->pers.weapon->pickup_name;
 
-		flag = (((!Q_stricmp(w, "Rocket Launcher") << 1) + !Q_stricmp(w, "Shotgun")) << 1) + !Q_stricmp(w, "Blaster");
+		flag = (((!Q_stricmp(w, "Rocket Launcher") << 1) + !Q_stricmp(w, "Pickaxe")) << 1) + !Q_stricmp(w, "Blaster");
 		gi.cprintf(ent, PRINT_HIGH, "%s %s %i\n", s, w, flag);
 
 		if (flag) {
 
 			it = FindItem("Blaster");
 
-			gi.cprintf(ent, PRINT_HIGH, "%i %i", ent->client->pers.inventory[ITEM_INDEX(FindItem("Shells"))], ent->client->pers.inventory[ITEM_INDEX(FindItem("Rockets"))]);
+			//gi.cprintf(ent, PRINT_HIGH, "%i %i", ent->client->pers.inventory[ITEM_INDEX(FindItem("Pickaxe Uses"))], ent->client->pers.inventory[ITEM_INDEX(FindItem("Rockets"))]);
 
-			if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Shotgun"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("Shells"))] && flag < 0b10) {
-				it = FindItem("Shotgun");
+			if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Pickaxe"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("PickaxeUses"))] && flag < 0b10) {
+				it = FindItem("Pickaxe");
 			}
 			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Rocket Launcher"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("Rockets"))] && flag < 0b100) {
 				it = FindItem("Rocket Launcher");
