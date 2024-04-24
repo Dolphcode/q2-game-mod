@@ -1617,7 +1617,6 @@ void CheckStat(int* stat) {
 	}
 }
 
-
 /*
 ==============
 ClientThink
