@@ -301,7 +301,7 @@ Draw help computer.
 */
 void HelpComputer (edict_t *ent)
 {
-	char	string[1024];
+	char	string[4096];
 	char	*sk;
 
 	if (skill->value == 0)
@@ -332,27 +332,36 @@ void HelpComputer (edict_t *ent)
 		level.found_secrets, level.total_secrets);
 	*/
 	
-
+	
 	/* MOD ADDITION
 	*  - Displays stats
 	*  - Displays craftables
 	*/
 	Com_sprintf(string, sizeof(string),
-		/*"xv 32 yv 8 picn help "			// background*/
-		"xv -96 yv -80 picn inventory "			// background
+		"xv -96 yv -80 picn inventory "			// stats
 		"xv -64 yv -48 string2 \"Hunger: %i\" "		// hunger
-		"xv -64 yv -16 string2 \"Sanity: %i\" "		// sanity
+		"xv -64 yv -16 string2 \"San: %i\" "		// sanity
 		"xv -64 yv 16 string2 \"Stamina: %i\" "		// stamina
-		"xv -64 yv 48 string2 \"Temperature: %i\" "		// temperature
-		"xv -64 yv 80 string2 \"Mightiness: %i\" "		// mightiness
-		"xv 160 yv -80 picn inventory "			// background
+		"xv -64 yv 48 string2 \"Temp: %i\" "		// temperature
+		"xv -64 yv 80 string2 \"Might: %i\" "		// mightiness
+		"xv 160 yv -80 picn inventory "			// crafts
+		"xv 180 yv -64 string2 \"|   item   | mats | craft? |\" " // table
+		"xv 180 yv -32 string2 \"    pick    2s,1w         \" " // pickaxe crafting
+		"xv 180 yv -16 string2 \"    axe      2s,1w         \" " // axe crafting
+		"xv 180 yv 0 string2   \"   torch     2g,1w         \" " // torch crafting
+		"xv 180 yv 16 string2  \"  sickle     2s,1w         \" " // sickle crafting
+		"xv 180 yv 32 string2  \"  shovel     2s,1w         \" " // shovel crafting
+		"xv 180 yv 48 string2  \"  luxpick    2au,1r        \" " // luxury pickaxe crafting
+		"xv 180 yv 64 string2  \"   bell       2m            \" " // luxury pickaxe crafting
+		"xv 180 yv 80 string2  \"   drip      2hm           \" " // iv drip crafting
+		"xv 180 yv 96 string2  \"   stew       2gm           \" " // vial of stew crafting
 		"xv 32 yv 100 picn help "			// background
 		"xv 202 yv 104 string2 \"%s\" "		// skill
 		"xv 0 yv 116 cstring2 \"%s\" "		// level name
 		"xv 0 yv 146 cstring2 \"%s\" "		// help 1
 		"xv 0 yv 202 cstring2 \"%s\" "		// help 2
 		"xv 50 yv 256 string2 \" kills     score    hi-score\" "
-		"xv 50 yv 264 string2 \" %3i       %3i       %i/%i\" ",
+		"xv 50 yv 264 string2 \" %3i       %3i         %3i  \" ",
 		ent->hunger,
 		ent->sanity,
 		ent->stamina,
@@ -360,11 +369,11 @@ void HelpComputer (edict_t *ent)
 		ent->mightiness,
 		sk,
 		"The Constant",
-		"Survive for as long as possible",
+		"Survive",
 		"Beat your high score",
 		level.killed_monsters,
 		ent->lifetime,
-		level.found_secrets, level.total_secrets);
+		level.found_secrets);
 
 	gi.WriteByte (svc_layout);
 	gi.WriteString (string);

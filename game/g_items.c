@@ -1248,6 +1248,75 @@ gitem_t	itemlist[] =
 		/* precache */ ""
 			},
 
+	/*QUAKED item_grass (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_grass",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_grass",
+		/* pickup */	"Grass",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+			},
+
+		/*QUAKED item_marble (.3 .3 1) (-16 -16 -16) (16 16 16)
+	*/
+	{
+		"item_gold",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_gold",
+		/* pickup */	"Gold",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+	},
+
+	/*QUAKED item_marble (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"item_ruby",
+		Pickup_Resource,
+		NULL,
+		NULL,
+		NULL,
+		"misc/ar1_pkup.wav",
+		"models/items/armor/body/tris.md2", EF_ROTATE,
+		NULL,
+		/* icon */		"i_ruby",
+		/* pickup */	"Ruby",
+		/* width */		3,
+		0,
+		NULL,
+		0,
+		0,
+		NULL,
+		0,
+		/* precache */ ""
+	},
+
 	/*QUAKED item_hearty_meat (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{

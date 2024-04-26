@@ -1155,6 +1155,12 @@ struct edict_s
 #define PICKAXE_DURABILITY 30 // Number of uses added when the craft command is performed
 #define PICKAXE_RANGE 64
 
+#define LUXPICKAXE_NORMAL_DAMAGE 20
+#define LUXPICKAXE_DEATHMATCH_DAMAGE 20
+#define LUXPICKAXE_KICK 0
+#define LUXPICKAXE_DURABILITY 30 // Number of uses added when the craft command is performed
+#define LUXPICKAXE_RANGE 64
+
 #define AXE_NORMAL_DAMAGE 10
 #define AXE_DEATHMATCH_DAMAGE 10
 #define AXE_KICK 0
