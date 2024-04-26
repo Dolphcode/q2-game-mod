@@ -1167,6 +1167,12 @@ struct edict_s
 #define AXE_DURABILITY 30 // Number of uses added when the craft command is performed
 #define AXE_RANGE 64
 
+#define SHOVEL_NORMAL_DAMAGE 10
+#define SHOVEL_DEATHMATCH_DAMAGE 10
+#define SHOVEL_KICK 0
+#define SHOVEL_DURABILITY 30 // Number of uses added when the craft command is performed
+#define SHOVEL_RANGE 64
+
 #define DUMBBELL_NORMAL_DAMAGE 100
 #define DUMBBELL_DEATHMATCH_DAMAGE 20
 #define DUMBBELL_KICK 0
@@ -1184,11 +1190,19 @@ void pickaxe_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Pickaxe_Fire(edict_t* ent);
 void Weapon_Pickaxe(edict_t* ent);
 
+// Luxury Pickaxe methods
+void fire_luxpickaxe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void luxpickaxe_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_LuxPickaxe_Fire(edict_t* ent);
+void Weapon_LuxPickaxe(edict_t* ent);
+
 // Axe methods
 void fire_axe(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
 void axe_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Axe_Fire(edict_t* ent);
 void Weapon_Axe(edict_t* ent);
+
+
 
 // Torch methods
 void Weapon_Torch_Fire(edict_t* ent);

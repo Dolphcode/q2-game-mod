@@ -1504,6 +1504,50 @@ gitem_t	itemlist[] =
 	},
 
 	{
+		"tool_luxpickaxe",
+		Pickup_Weapon,
+		Use_Weapon,
+		NULL,
+		Weapon_LuxPickaxe,
+		"misc/w_pkup.wav",
+		"models/weapons/g_hyperb/tris.md2", EF_ROTATE,
+		"models/weapons/v_hyperb/tris.md2",
+		/* icon */		"w_hyperblaster",
+		/* pickup */	"LuxuryPickaxe",
+				0,
+				1,
+				"LuxuryPickaxeUses",
+				IT_WEAPON,
+				WEAP_HYPERBLASTER,
+				NULL,
+				0,
+				/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+	},
+
+	/*QUAKED uses_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
+*/
+	{
+		"uses_luxpickaxe",
+		Pickup_Ammo,
+		NULL,
+		NULL,
+		NULL,
+		"misc/am_pkup.wav",
+		"models/items/ammo/cells/medium/tris.md2", 0,
+		NULL,
+		/* icon */		"a_cells",
+		/* pickup */	"LuxuryPickaxeUses",
+		/* width */		3,
+				10,
+				NULL,
+				IT_AMMO,
+				0,
+				NULL,
+				6,
+				/* precache */ ""
+	},
+
+	{
 		"tool_torch",
 		Pickup_Weapon,
 		Use_Weapon,

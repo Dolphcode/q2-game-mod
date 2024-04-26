@@ -1795,7 +1795,6 @@ void Weapon_LuxPickaxe_Fire(edict_t* ent) {
 }
 
 void Weapon_LuxPickaxe(edict_t* ent) {
-{
 	static int	pause_frames[]	= {0};
 	static int	fire_frames[]	= {6, 7, 8, 9, 10, 11, 0};
 
