@@ -1002,6 +1002,9 @@ void Cmd_SpawnResource_f(edict_t* ent) {
 	else if (!Q_stricmp(gi.args(), "grave")) {
 		SP_resource_ruby(e);
 	}
+	else if (!Q_stricmp(gi.args(), "grass")) {
+		SP_resource_grass(e);
+	}
 	else {
 		SP_resource_tree(e);
 	}

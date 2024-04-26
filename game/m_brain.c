@@ -819,3 +819,105 @@ void SP_resource_tree(edict_t* self)
 
 	walkmonster_start(self);
 }
+
+void grass_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+{
+	int		n;
+
+	self->s.effects = 0;
+	self->monsterinfo.power_armor_type = POWER_ARMOR_NONE;
+
+	// check for gib
+	if (self->health <= self->gib_health)
+	{
+		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
+		for (n = 0; n < 2; n++)
+			ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC);
+		for (n = 0; n < 4; n++)
+			ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
+		ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC);
+		self->deadflag = DEAD_DEAD;
+		return;
+	}
+
+	if (self->deadflag == DEAD_DEAD)
+		return;
+
+	// regular death
+	gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NORM, 0);
+	self->deadflag = DEAD_DEAD;
+	self->takedamage = DAMAGE_YES;
+	if (random() <= 0.5)
+		self->monsterinfo.currentmove = &brain_move_death1;
+	else
+		self->monsterinfo.currentmove = &brain_move_death2;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Grass");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
+
+	G_FreeEdict(self);
+}
+
+/*QUAKED monster_brain (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
+*/
+void SP_resource_grass(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	sound_chest_open = gi.soundindex("brain/brnatck1.wav");
+	sound_tentacles_extend = gi.soundindex("brain/brnatck2.wav");
+	sound_tentacles_retract = gi.soundindex("brain/brnatck3.wav");
+	sound_death = gi.soundindex("brain/brndeth1.wav");
+	sound_idle1 = gi.soundindex("brain/brnidle1.wav");
+	sound_idle2 = gi.soundindex("brain/brnidle2.wav");
+	sound_idle3 = gi.soundindex("brain/brnlens1.wav");
+	sound_pain1 = gi.soundindex("brain/brnpain1.wav");
+	sound_pain2 = gi.soundindex("brain/brnpain2.wav");
+	sound_sight = gi.soundindex("brain/brnsght1.wav");
+	sound_search = gi.soundindex("brain/brnsrch1.wav");
+	sound_melee1 = gi.soundindex("brain/melee1.wav");
+	sound_melee2 = gi.soundindex("brain/melee2.wav");
+	sound_melee3 = gi.soundindex("brain/melee3.wav");
+
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+	self->s.modelindex = gi.modelindex("models/monsters/brain/tris.md2");
+	VectorSet(self->mins, -16, -16, -24);
+	VectorSet(self->maxs, 16, 16, 32);
+
+	self->health = 40;
+	self->gib_health = -150;
+	self->mass = 400;
+
+	self->pain = tree_pain;
+	self->die = grass_die;
+
+	self->monsterinfo.stand = brain_stand;
+	self->monsterinfo.walk = brain_stand;
+	self->monsterinfo.run = brain_stand;
+	self->monsterinfo.dodge = brain_stand;
+	//	self->monsterinfo.attack = brain_attack;
+	self->monsterinfo.melee = brain_stand;
+	self->monsterinfo.sight = brain_stand;
+	self->monsterinfo.search = brain_stand;
+	self->monsterinfo.idle = brain_stand;
+
+	gi.linkentity(self);
+
+	self->monsterinfo.currentmove = &brain_move_stand;
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	self->classname = "pickable";
+	self->takedamage = 0;
+
+	walkmonster_start(self);
+}
