@@ -1705,11 +1705,17 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		ent->lifetime += 1;
 
 		if (ent->lifetime % 2 == 0) {
-			ent->hunger -= 1;
+			ent->hunger -= 100; // 100 debug
 		}
 
 		ent->mightiness -= 1;
 		ent->stamina += 20;
+
+		if (ent->hunger <= 0 && ent->health > 0) {
+			//ent->pain(ent, ent, 1.0, 5);
+			ent->health -= 5;
+			if (ent->health <= 0) ent->die(ent, ent, ent, 5, ent->s.origin);
+		}
 
 		CheckStat(&(ent->hunger));
 		CheckStat(&(ent->sanity));
