@@ -1011,8 +1011,13 @@ void Cmd_Craft_f(edict_t* ent) {
 	int* stone = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Stone"))];
 	int* wood = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Wood"))];
 	int* marble = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Marble"))];
+	int* grass = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Grass"))];
+	int* gold = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Gold"))];
+	int* ruby = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Ruby"))];
+	int* hmeat = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Hearty Meat"))];
+	int* gmeat = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Gourmet Meat"))];
 
-	if (!Q_stricmp(gi.args(), "pickaxe")) {
+	if (!Q_stricmp(gi.args(), "pick")) {
 		if (*stone >= 2 && *wood >= 1) {
 			*stone -= 2;
 			*wood -= 1;
@@ -1027,9 +1032,49 @@ void Cmd_Craft_f(edict_t* ent) {
 		}
 	}
 	else if (!Q_stricmp(gi.args(), "torch")) {
-		if (*wood >= 2) {
+		if (*wood >= 1 && *grass >= 2) {
 			*wood -= 1;
+			*grass -= 2;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("TorchUses"))] += FindItem("TorchUses")->quantity;
+		}
+	}
+	else if (!Q_stricmp(gi.args(), "sickle")) {
+		if (*stone >= 2 && *wood >= 1) {
+			*stone -= 2;
+			*wood -= 1;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("SickleUses"))] += FindItem("SickleUses")->quantity;
+		}
+	}
+	else if (!Q_stricmp(gi.args(), "shovel")) {
+		if (*stone >= 2 && *wood >= 1) {
+			*stone -= 2;
+			*wood -= 1;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("ShovelUses"))] += FindItem("ShovelUses")->quantity;
+		}
+	}
+	else if (!Q_stricmp(gi.args(), "luxpick")) {
+		if (*gold >= 2 && *ruby >= 1) {
+			*gold -= 2;
+			*ruby -= 1;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("LuxuryPickaxeUses"))] += FindItem("LuxuryPickaxeUses")->quantity;
+		}
+	}
+	else if (!Q_stricmp(gi.args(), "bell")) {
+		if (*marble >= 2) {
+			*marble -= 1;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("TorchUses"))] += FindItem("TorchUses")->quantity;
+		}
+	}
+	else if (!Q_stricmp(gi.args(), "drip")) {
+		if (*hmeat >= 2) {
+			*hmeat -= 2;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("IV Drip"))] += FindItem("IV Drip")->quantity;
+		}
+	}
+	else if (!Q_stricmp(gi.args(), "stew")) {
+		if (*gmeat >= 2) {
+			*gmeat -= 2;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("Vial of Stew"))] += FindItem("Vial of Stew")->quantity;
 		}
 	}
 	else {

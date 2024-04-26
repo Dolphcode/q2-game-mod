@@ -332,7 +332,16 @@ void HelpComputer (edict_t *ent)
 		level.found_secrets, level.total_secrets);
 	*/
 	
-	
+	int* stone = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Stone"))];
+	int* wood = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Wood"))];
+	int* marble = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Marble"))];
+	int* grass = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Grass"))];
+	int* gold = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Gold"))];
+	int* ruby = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Ruby"))];
+	int* hmeat = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Hearty Meat"))];
+	int* gmeat = &ent->client->pers.inventory[ITEM_INDEX(FindItem("Gourmet Meat"))];
+
+
 	/* MOD ADDITION
 	*  - Displays stats
 	*  - Displays craftables
@@ -346,15 +355,15 @@ void HelpComputer (edict_t *ent)
 		"xv -64 yv 80 string2 \"Might: %i\" "		// mightiness
 		"xv 160 yv -80 picn inventory "			// crafts
 		"xv 180 yv -64 string2 \"|   item   | mats | craft? |\" " // table
-		"xv 180 yv -32 string2 \"    pick    2s,1w         \" " // pickaxe crafting
-		"xv 180 yv -16 string2 \"    axe      2s,1w         \" " // axe crafting
-		"xv 180 yv 0 string2   \"   torch     2g,1w         \" " // torch crafting
-		"xv 180 yv 16 string2  \"  sickle     2s,1w         \" " // sickle crafting
-		"xv 180 yv 32 string2  \"  shovel     2s,1w         \" " // shovel crafting
-		"xv 180 yv 48 string2  \"  luxpick    2au,1r        \" " // luxury pickaxe crafting
-		"xv 180 yv 64 string2  \"   bell       2m            \" " // luxury pickaxe crafting
-		"xv 180 yv 80 string2  \"   drip      2hm           \" " // iv drip crafting
-		"xv 180 yv 96 string2  \"   stew       2gm           \" " // vial of stew crafting
+		"xv 180 yv -32 string2 \"    pick    2s,1w     %s   \" " // pickaxe crafting
+		"xv 180 yv -16 string2 \"    axe      2s,1w    %s   \" " // axe crafting
+		"xv 180 yv 0 string2   \"   torch     2g,1w    %s   \" " // torch crafting
+		"xv 180 yv 16 string2  \"  sickle     2s,1w    %s   \" " // sickle crafting
+		"xv 180 yv 32 string2  \"  shovel     2s,1w    %s   \" " // shovel crafting
+		"xv 180 yv 48 string2  \"  luxpick    2au,1r   %s   \" " // luxury pickaxe crafting
+		"xv 180 yv 64 string2  \"   bell       2m      %s    \" " // luxury pickaxe crafting
+		"xv 180 yv 80 string2  \"   drip      2hm      %s   \" " // iv drip crafting
+		"xv 180 yv 96 string2  \"   stew       2gm     %s    \" " // vial of stew crafting
 		"xv 32 yv 100 picn help "			// background
 		"xv 202 yv 104 string2 \"%s\" "		// skill
 		"xv 0 yv 116 cstring2 \"%s\" "		// level name
@@ -367,6 +376,15 @@ void HelpComputer (edict_t *ent)
 		ent->stamina,
 		ent->temperature,
 		ent->mightiness,
+		(*stone >= 2 && *wood >= 1) ? "Y" : "N",
+		(*stone >= 2 && *wood >= 1) ? "Y" : "N",
+		(*grass >= 2 && *wood >= 1) ? "Y" : "N",
+		(*stone >= 2 && *wood >= 1) ? "Y" : "N",
+		(*stone >= 2 && *wood >= 1) ? "Y" : "N",
+		(*gold >= 2 && *ruby >= 1) ? "Y" : "N",
+		(*marble >= 1) ? "Y" : "N",
+		(*hmeat >= 1) ? "Y" : "N",
+		(*gmeat >= 1) ? "Y" : "N",
 		sk,
 		"The Constant",
 		"Survive",
