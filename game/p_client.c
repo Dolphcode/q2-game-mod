@@ -626,6 +626,14 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.selected_item = ITEM_INDEX(item);
 	client->pers.inventory[client->pers.selected_item] = 1;
 
+	item = FindItem("Shovel");
+	client->pers.selected_item = ITEM_INDEX(item);
+	client->pers.inventory[client->pers.selected_item] = 1;
+
+	item = FindItem("Sickle");
+	client->pers.selected_item = ITEM_INDEX(item);
+	client->pers.inventory[client->pers.selected_item] = 1;
+
 	item = FindItem("Blaster");
 	client->pers.selected_item = ITEM_INDEX(item);
 	client->pers.inventory[client->pers.selected_item] = 1;
@@ -1701,7 +1709,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		}
 
 		ent->mightiness -= 1;
-		ent->stamina += 1;
+		ent->stamina += 20;
 
 		CheckStat(&(ent->hunger));
 		CheckStat(&(ent->sanity));

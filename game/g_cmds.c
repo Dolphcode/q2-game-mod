@@ -431,7 +431,7 @@ void Cmd_Use_f (edict_t *ent)
 
 		w = ent->client->pers.weapon->pickup_name;
 
-		flag = (((((!Q_stricmp(w, "LuxuryPickaxe") << 1) + !Q_stricmp(w, "Torch") << 1) + !Q_stricmp(w, "Axe") << 1) + !Q_stricmp(w, "Pickaxe")) << 1) + !Q_stricmp(w, "Blaster");
+		flag = (((((((!Q_stricmp(w, "Sickle") << 1 ) + !Q_stricmp(w, "Shovel") << 1) + !Q_stricmp(w, "LuxuryPickaxe") << 1) + !Q_stricmp(w, "Torch") << 1) + !Q_stricmp(w, "Axe") << 1) + !Q_stricmp(w, "Pickaxe")) << 1) + !Q_stricmp(w, "Blaster");
 		gi.cprintf(ent, PRINT_HIGH, "%s %s %i\n", s, w, flag);
 
 		if (flag) {
@@ -451,6 +451,12 @@ void Cmd_Use_f (edict_t *ent)
 			}
 			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("LuxuryPickaxe"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("LuxuryPickaxeUses"))] && flag < 0b10000) {
 				it = FindItem("LuxuryPickaxe");
+			}
+			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Shovel"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("ShovelUses"))] && flag < 0b100000) {
+				it = FindItem("Shovel");
+			}
+			else if (ent->client->pers.inventory[ITEM_INDEX(FindItem("Sickle"))] && ent->client->pers.inventory[ITEM_INDEX(FindItem("SickleUses"))] && flag < 0b1000000) {
+				it = FindItem("Sickle");
 			}
 
 		}

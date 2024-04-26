@@ -1173,6 +1173,12 @@ struct edict_s
 #define SHOVEL_DURABILITY 30 // Number of uses added when the craft command is performed
 #define SHOVEL_RANGE 64
 
+#define SICKLE_NORMAL_DAMAGE 10
+#define SICKLE_DEATHMATCH_DAMAGE 10
+#define SICKLE_KICK 0
+#define SICKLE_DURABILITY 30 // Number of uses added when the craft command is performed
+#define SICKLE_RANGE 64
+
 #define DUMBBELL_NORMAL_DAMAGE 100
 #define DUMBBELL_DEATHMATCH_DAMAGE 20
 #define DUMBBELL_KICK 0
@@ -1202,7 +1208,17 @@ void axe_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Axe_Fire(edict_t* ent);
 void Weapon_Axe(edict_t* ent);
 
+// Shovel methods
+void fire_shovel(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void shovel_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_Shovel_Fire(edict_t* ent);
+void Weapon_Shovel(edict_t* ent);
 
+// Sickle methods
+void fire_sickle(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void sickle_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_Sickle_Fire(edict_t* ent);
+void Weapon_Sickle(edict_t* ent);
 
 // Torch methods
 void Weapon_Torch_Fire(edict_t* ent);
