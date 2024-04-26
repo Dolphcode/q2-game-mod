@@ -1723,10 +1723,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			if (ent->health <= 0) ent->die(ent, ent, ent, 5, ent->s.origin);
 		}
 
-		gi.cprintf(ent, PRINT_HIGH, "%i", ent->sanity <= 0 && ent->lifetime % 5 == 0);
 		if (ent->sanity <= 0 && ent->lifetime % 5 == 0) {
 			//ent->pain(ent, ent, 1.0, 5);
-			gi.cprintf(ent, PRINT_HIGH, "spawning");
 			edict_t* e;
 			vec3_t v = { 0, 0, 0 };
 			vec3_t up;
