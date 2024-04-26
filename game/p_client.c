@@ -1717,6 +1717,12 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			if (ent->health <= 0) ent->die(ent, ent, ent, 5, ent->s.origin);
 		}
 
+		if ((ent->temperature <= 10 || ent->temperature >= 90) && ent->health > 0) {
+			//ent->pain(ent, ent, 1.0, 5);
+			ent->health -= 5;
+			if (ent->health <= 0) ent->die(ent, ent, ent, 5, ent->s.origin);
+		}
+
 		CheckStat(&(ent->hunger));
 		CheckStat(&(ent->sanity));
 		CheckStat(&(ent->temperature));
