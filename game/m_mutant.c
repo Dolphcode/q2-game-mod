@@ -661,3 +661,140 @@ void SP_monster_mutant (edict_t *self)
 	self->monsterinfo.scale = MODEL_SCALE;
 	walkmonster_start (self);
 }
+
+/* MOD ADDITION: GOLD RESOURCE
+*  - I hijacked the float to turn it into a gold gatherable since this looked cube-ish
+*
+* For this implementation I need
+*  - A custom die command to make this guy drop gold
+*  - A custom pain command so that the float doesn't react to being shot at
+*  - A custom spawn command to spawn the tree
+*/
+
+void gold_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+{
+	int		n;
+
+	if (self->health <= self->gib_health)
+	{
+		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
+		for (n = 0; n < 2; n++)
+			ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC);
+		for (n = 0; n < 4; n++)
+			ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
+		ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC);
+		self->deadflag = DEAD_DEAD;
+		return;
+	}
+
+	if (self->deadflag == DEAD_DEAD)
+		return;
+
+	gi.sound(self, CHAN_VOICE, sound_death, 1, ATTN_NORM, 0);
+	self->deadflag = DEAD_DEAD;
+	self->takedamage = DAMAGE_NO;
+	self->s.skinnum = 1;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Gold");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
+
+	G_FreeEdict(self);
+}
+
+mmove_t gold_move_pain = { FRAME_pain101, FRAME_pain105, mutant_frames_pain1, mutant_stand };
+
+void gold_pain(edict_t* self, edict_t* other, float kick, int damage)
+{
+	float	r;
+
+	if (self->health < (self->max_health / 2))
+		self->s.skinnum = 1;
+
+	if (level.time < self->pain_debounce_time)
+		return;
+
+	self->pain_debounce_time = level.time + 3;
+
+	if (skill->value == 3)
+		return;		// no pain anims in nightmare
+
+	r = random();
+	if (r < 0.33)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+		self->monsterinfo.currentmove = &gold_move_pain;
+	}
+	else if (r < 0.66)
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain2, 1, ATTN_NORM, 0);
+		self->monsterinfo.currentmove = &gold_move_pain;
+	}
+	else
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+		self->monsterinfo.currentmove = &gold_move_pain;
+	}
+}
+
+void SP_resource_gold(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	sound_swing = gi.soundindex("mutant/mutatck1.wav");
+	sound_hit = gi.soundindex("mutant/mutatck2.wav");
+	sound_hit2 = gi.soundindex("mutant/mutatck3.wav");
+	sound_death = gi.soundindex("mutant/mutdeth1.wav");
+	sound_idle = gi.soundindex("mutant/mutidle1.wav");
+	sound_pain1 = gi.soundindex("mutant/mutpain1.wav");
+	sound_pain2 = gi.soundindex("mutant/mutpain2.wav");
+	sound_sight = gi.soundindex("mutant/mutsght1.wav");
+	sound_search = gi.soundindex("mutant/mutsrch1.wav");
+	sound_step1 = gi.soundindex("mutant/step1.wav");
+	sound_step2 = gi.soundindex("mutant/step2.wav");
+	sound_step3 = gi.soundindex("mutant/step3.wav");
+	sound_thud = gi.soundindex("mutant/thud1.wav");
+
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+	self->s.modelindex = gi.modelindex("models/monsters/mutant/tris.md2");
+	VectorSet(self->mins, -32, -32, -24);
+	VectorSet(self->maxs, 32, 32, 48);
+
+	self->health = 100;
+	self->gib_health = -120;
+	self->mass = 300;
+
+	self->pain = gold_pain;
+	self->die = gold_die;
+
+	self->monsterinfo.stand = mutant_stand;
+	self->monsterinfo.walk = mutant_stand;
+	self->monsterinfo.run = mutant_stand;
+	self->monsterinfo.dodge = NULL;
+	self->monsterinfo.attack = mutant_stand;
+	self->monsterinfo.melee = mutant_stand;
+	self->monsterinfo.sight = mutant_stand;
+	self->monsterinfo.search = mutant_stand;
+	self->monsterinfo.idle = mutant_stand;
+	self->monsterinfo.checkattack = mutant_stand;
+
+	gi.linkentity(self);
+
+	self->monsterinfo.currentmove = &mutant_move_stand;
+
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	self->classname = "luxmineable";
+	self->takedamage = DAMAGE_NO;
+
+	walkmonster_start(self);
+}

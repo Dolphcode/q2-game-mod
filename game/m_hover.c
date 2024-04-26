@@ -618,3 +618,140 @@ void SP_monster_hover (edict_t *self)
 
 	flymonster_start (self);
 }
+
+/* MOD ADDITION: GRAVE RESOURCE
+*  - I hijacked the float to turn it into a gold gatherable since this looked cube-ish
+*
+* For this implementation I need
+*  - A custom die command to make this guy drop ruby
+*  - A custom pain command so that the float doesn't react to being shot at
+*  - A custom spawn command to spawn the ruby
+*/
+
+void ruby_die(edict_t* self, edict_t* inflictor, edict_t* attacker, int damage, vec3_t point)
+{
+	int		n;
+
+	// check for gib
+	if (self->health <= self->gib_health)
+	{
+		gi.sound(self, CHAN_VOICE, gi.soundindex("misc/udeath.wav"), 1, ATTN_NORM, 0);
+		for (n = 0; n < 2; n++)
+			ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC);
+		for (n = 0; n < 2; n++)
+			ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
+		ThrowHead(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC);
+		self->deadflag = DEAD_DEAD;
+		return;
+	}
+
+	if (self->deadflag == DEAD_DEAD)
+		return;
+
+	// regular death
+	if (random() < 0.5)
+		gi.sound(self, CHAN_VOICE, sound_death1, 1, ATTN_NORM, 0);
+	else
+		gi.sound(self, CHAN_VOICE, sound_death2, 1, ATTN_NORM, 0);
+	self->deadflag = DEAD_DEAD;
+	self->takedamage = DAMAGE_YES;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Ruby");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
+
+	G_FreeEdict(self);
+}
+
+mmove_t ruby_move_pain = { FRAME_pain101, FRAME_pain128, hover_frames_pain1, hover_stand };
+
+void ruby_pain(edict_t* self, edict_t* other, float kick, int damage)
+{
+	if (self->health < (self->max_health / 2))
+		self->s.skinnum = 1;
+
+	if (level.time < self->pain_debounce_time)
+		return;
+
+	self->pain_debounce_time = level.time + 3;
+
+	if (skill->value == 3)
+		return;		// no pain anims in nightmare
+
+	if (damage <= 25)
+	{
+		if (random() < 0.5)
+		{
+			gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+			self->monsterinfo.currentmove = &ruby_move_pain;
+		}
+		else
+		{
+			gi.sound(self, CHAN_VOICE, sound_pain2, 1, ATTN_NORM, 0);
+			self->monsterinfo.currentmove = &ruby_move_pain;
+		}
+	}
+	else
+	{
+		gi.sound(self, CHAN_VOICE, sound_pain1, 1, ATTN_NORM, 0);
+		self->monsterinfo.currentmove = &ruby_move_pain;
+	}
+}
+
+/*QUAKED monster_hover (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight
+*/
+void SP_resource_ruby(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	sound_pain1 = gi.soundindex("hover/hovpain1.wav");
+	sound_pain2 = gi.soundindex("hover/hovpain2.wav");
+	sound_death1 = gi.soundindex("hover/hovdeth1.wav");
+	sound_death2 = gi.soundindex("hover/hovdeth2.wav");
+	sound_sight = gi.soundindex("hover/hovsght1.wav");
+	sound_search1 = gi.soundindex("hover/hovsrch1.wav");
+	sound_search2 = gi.soundindex("hover/hovsrch2.wav");
+
+	gi.soundindex("hover/hovatck1.wav");
+
+	self->s.sound = gi.soundindex("hover/hovidle1.wav");
+
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+	self->s.modelindex = gi.modelindex("models/monsters/hover/tris.md2");
+	VectorSet(self->mins, -24, -24, -24);
+	VectorSet(self->maxs, 24, 24, 32);
+
+	self->health = 100;
+	self->gib_health = -100;
+	self->mass = 150;
+
+	self->pain = ruby_pain;
+	self->die = ruby_die;
+
+	self->monsterinfo.stand = hover_stand;
+	self->monsterinfo.walk = hover_stand;
+	self->monsterinfo.run = hover_stand;
+	//	self->monsterinfo.dodge = hover_dodge;
+	self->monsterinfo.attack = hover_stand;
+	self->monsterinfo.sight = hover_stand;
+	self->monsterinfo.search = hover_stand;
+
+	gi.linkentity(self);
+
+	self->monsterinfo.currentmove = &hover_move_stand;
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	self->classname = "diggable";
+	self->takedamage = 0;
+
+	flymonster_start(self);
+}
