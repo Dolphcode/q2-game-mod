@@ -355,15 +355,15 @@ void HelpComputer (edict_t *ent)
 		"xv -64 yv 80 string2 \"Might: %i\" "		// mightiness
 		"xv 160 yv -80 picn inventory "			// crafts
 		"xv 180 yv -64 string2 \"|   item   | mats | craft? |\" " // table
-		"xv 180 yv -32 string2 \"    pick    2s,1w     %s   \" " // pickaxe crafting
-		"xv 180 yv -16 string2 \"    axe      2s,1w    %s   \" " // axe crafting
-		"xv 180 yv 0 string2   \"   torch     2g,1w    %s   \" " // torch crafting
-		"xv 180 yv 16 string2  \"  sickle     2s,1w    %s   \" " // sickle crafting
-		"xv 180 yv 32 string2  \"  shovel     2s,1w    %s   \" " // shovel crafting
-		"xv 180 yv 48 string2  \"  luxpick    2au,1r   %s   \" " // luxury pickaxe crafting
-		"xv 180 yv 64 string2  \"   bell       2m      %s    \" " // luxury pickaxe crafting
-		"xv 180 yv 80 string2  \"   drip      2hm      %s   \" " // iv drip crafting
-		"xv 180 yv 96 string2  \"   stew       2gm     %s    \" " // vial of stew crafting
+		"xv 180 yv -48 string2 \"    pick    2s,1w     %s   \" " // pickaxe crafting
+		"xv 180 yv -32 string2 \"    axe      2s,1w    %s   \" " // axe crafting
+		"xv 180 yv -16 string2   \"   torch     2g,1w    %s   \" " // torch crafting
+		"xv 180 yv 0 string2  \"  sickle     2s,1w    %s   \" " // sickle crafting
+		"xv 180 yv 16 string2  \"  shovel     2s,1w    %s   \" " // shovel crafting
+		"xv 180 yv 32 string2  \"  luxpick    2au,1r   %s   \" " // luxury pickaxe crafting
+		"xv 180 yv 48 string2  \"   bell       2m      %s    \" " // luxury pickaxe crafting
+		"xv 180 yv 64 string2  \"   drip      2hm      %s   \" " // iv drip crafting
+		"xv 180 yv 80 string2  \"   stew       2gm     %s    \" " // vial of stew crafting
 		"xv 32 yv 100 picn help "			// background
 		"xv 202 yv 104 string2 \"%s\" "		// skill
 		"xv 0 yv 116 cstring2 \"%s\" "		// level name
