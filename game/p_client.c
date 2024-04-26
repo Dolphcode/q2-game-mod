@@ -1667,7 +1667,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			gi.AddCommandString("sky unit1_");
 
 			if (ent->lifetime % 2 == 0) { // Every 2 seconds drop sanity
-				ent->sanity -= 5;
+				ent->sanity -= 100; // debug 100 -> 5
 			}
 
 			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can change temperature
@@ -1705,7 +1705,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		ent->lifetime += 1;
 
 		if (ent->lifetime % 2 == 0) {
-			ent->hunger -= 100; // 100 debug
+			ent->hunger -= 5; // 100 debug
 		}
 
 		ent->mightiness -= 1;
@@ -1721,6 +1721,30 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			//ent->pain(ent, ent, 1.0, 5);
 			ent->health -= 5;
 			if (ent->health <= 0) ent->die(ent, ent, ent, 5, ent->s.origin);
+		}
+
+		gi.cprintf(ent, PRINT_HIGH, "%i", ent->sanity <= 0 && ent->lifetime % 5 == 0);
+		if (ent->sanity <= 0 && ent->lifetime % 5 == 0) {
+			//ent->pain(ent, ent, 1.0, 5);
+			gi.cprintf(ent, PRINT_HIGH, "spawning");
+			edict_t* e;
+			vec3_t v = { 0, 0, 0 };
+			vec3_t up;
+
+			AngleVectors(ent->s.angles, NULL, NULL, up);
+
+			VectorCopy(up, v);
+
+			e = G_Spawn();
+
+			v[0] *= 200;
+			v[1] *= 200;
+			v[2] *= 200;
+
+			VectorAdd(ent->s.origin, v, v);
+			VectorCopy(v, e->s.origin);
+
+			SP_monster_berserk(e);
 		}
 
 		CheckStat(&(ent->hunger));

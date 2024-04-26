@@ -1012,6 +1012,32 @@ void Cmd_SpawnResource_f(edict_t* ent) {
 
 /*
 =================
+MOD ADDITION - SpawnNightmareMonster
+=================
+*/
+void Cmd_SpawnNightmare_f(edict_t* ent) {
+	edict_t* e;
+	vec3_t v = { 0, 0, 0 };
+	vec3_t up;
+
+	AngleVectors(ent->s.angles, NULL, NULL, up);
+
+	VectorCopy(up, v);
+
+	e = G_Spawn();
+
+	v[0] *= 200;
+	v[1] *= 200;
+	v[2] *= 200;
+
+	VectorAdd(ent->s.origin, v, v);
+	VectorCopy(v, e->s.origin);
+
+	SP_monster_berserk(e);
+}
+
+/*
+=================
 MOD ADDITION - Craft
 =================
 */
@@ -1183,6 +1209,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_PrintPlayerStats_f(ent);
 	else if (Q_stricmp(cmd, "spawnresource") == 0)
 		Cmd_SpawnResource_f(ent);
+	else if (Q_stricmp(cmd, "spawnnightmare") == 0)
+		Cmd_SpawnNightmare_f(ent);
 	else if (Q_stricmp(cmd, "craft") == 0)
 		Cmd_Craft_f(ent);
 	else	// anything that doesn't match a command will be a chat
