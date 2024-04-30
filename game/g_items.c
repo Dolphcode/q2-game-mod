@@ -1679,6 +1679,50 @@ gitem_t	itemlist[] =
 				/* precache */ ""
 	},
 
+		{
+		"tool_barbel",
+		Pickup_Weapon,
+		Use_Weapon,
+		NULL,
+		Weapon_Barbel,
+		"misc/w_pkup.wav",
+		"models/weapons/g_shotg/tris.md2", EF_ROTATE,
+		"models/weapons/v_shotg/tris.md2",
+		/* icon */		"w_shotgun",
+		/* pickup */	"Barbel",
+				0,
+				1,
+				"BarbelUses",
+				IT_WEAPON,
+				WEAP_SHOTGUN,
+				NULL,
+				0,
+				/* precache */ "sprites/s_bfg1.sp2 sprites/s_bfg2.sp2 sprites/s_bfg3.sp2 weapons/bfg__f1y.wav weapons/bfg__l1a.wav weapons/bfg__x1b.wav weapons/bfg_hum.wav"
+		},
+
+		/*QUAKED uses_pickaxe (.3 .3 1) (-16 -16 -16) (16 16 16)
+	*/
+	{
+		"uses_barbel",
+		Pickup_Ammo,
+		NULL,
+		NULL,
+		NULL,
+		"misc/am_pkup.wav",
+		"models/items/ammo/cells/medium/tris.md2", 0,
+		NULL,
+		/* icon */		"a_cells",
+		/* pickup */	"BarbelUses",
+		/* width */		3,
+				10,
+				NULL,
+				IT_AMMO,
+				0,
+				NULL,
+				6,
+				/* precache */ ""
+	},
+
 
 	//
 	// ARMOR
