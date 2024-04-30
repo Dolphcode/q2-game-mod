@@ -2047,3 +2047,122 @@ void Weapon_Sickle(edict_t* ent) {
 
 	Weapon_Generic(ent, 4, 31, 61, 64, pause_frames, fire_frames, Weapon_Sickle_Fire);
 }
+
+/* BARBEL
+*/
+
+void fire_barbel(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick) {
+	trace_t		tr;
+	vec3_t		dir;
+	vec3_t		forward, right, up;
+	vec3_t		end;
+
+	tr = gi.trace(self->s.origin, NULL, NULL, start, self, MASK_SHOT); // stops you from shooting into the wall
+	if (!(tr.fraction < 1.0))
+	{
+		vectoangles(aimdir, dir);
+		AngleVectors(dir, forward, right, up);
+		VectorMA(start, SHOVEL_RANGE, forward, end);
+
+		tr = gi.trace(start, NULL, NULL, end, self, MASK_SHOT);
+
+		// send gun puff / flash
+		if (!((tr.surface) && (tr.surface->flags & SURF_SKY)))
+		{
+			if (tr.fraction < 1.0)
+			{
+				if (!Q_stricmp(tr.ent->classname, "pickable"))
+				{
+					T_Damage(tr.ent, self, self, aimdir, tr.endpos, tr.plane.normal, damage, kick, DAMAGE_BULLET, 0);
+					gi.WriteByte(svc_temp_entity);
+					gi.WriteByte(TE_SPARKS);
+					gi.WritePosition(tr.endpos);
+					gi.WriteDir(tr.plane.normal);
+					gi.multicast(tr.endpos, MULTICAST_PVS);
+
+					if (self->client)
+						PlayerNoise(self, tr.endpos, PNOISE_IMPACT);
+
+					// Only use up ammo if
+					if (!((int)dmflags->value & DF_INFINITE_AMMO))
+						self->client->pers.inventory[self->client->ammo_index]--;
+				}
+				else
+				{
+					if (strncmp(tr.surface->name, "sky", 3) != 0)
+					{
+						gi.WriteByte(svc_temp_entity);
+						gi.WriteByte(TE_SPARKS);
+						gi.WritePosition(tr.endpos);
+						gi.WriteDir(tr.plane.normal);
+						gi.multicast(tr.endpos, MULTICAST_PVS);
+
+						if (self->client)
+							PlayerNoise(self, tr.endpos, PNOISE_IMPACT);
+					}
+				}
+			}
+		}
+	}
+}
+
+
+void barbel_attack(edict_t* ent, vec3_t g_offset, int damage) {
+	if (ent->stamina <= 0) return;
+	ent->stamina -= 20;
+
+	vec3_t		start;
+	vec3_t		forward, right;
+	vec3_t		offset;
+
+	/*
+	if (ent->client->ps.gunframe == 9)
+	{
+		ent->client->ps.gunframe++;
+		return;
+	}*/
+
+	/*
+	if (is_quad)
+		damage *= 4;
+	*/
+	AngleVectors(ent->client->v_angle, forward, right, NULL);
+
+	VectorScale(forward, -2, ent->client->kick_origin);
+	ent->client->kick_angles[0] = -2;
+
+	VectorSet(offset, 0, 8, ent->viewheight - 8);
+	P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
+
+	fire_shovel(ent, start, forward, damage, SICKLE_KICK);
+
+	//ent->client->ps.gunframe++;
+	//PlayerNoise(ent, start, PNOISE_WEAPON);
+
+
+}
+
+void Weapon_Barbel_Fire(edict_t* ent) {
+	int damage;
+	if (deathmatch->value)
+		damage = SICKLE_DEATHMATCH_DAMAGE;
+	else
+		damage = SICKLE_NORMAL_DAMAGE;
+
+	if (ent->mightiness > 80) {
+		damage *= 2;
+	}
+	else if (ent->mightiness < 20) {
+		damage /= 2;
+	}
+
+	sickle_attack(ent, vec3_origin, damage);
+	ent->client->ps.gunframe++;
+}
+
+void Weapon_Barbel(edict_t* ent) {
+	static int	pause_frames[] = { 38, 43, 51, 61, 0 };
+	static int	fire_frames[] = { 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 0 };
+
+	Weapon_Generic(ent, 4, 31, 61, 64, pause_frames, fire_frames, Weapon_Sickle_Fire);
+}

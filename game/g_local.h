@@ -1220,6 +1220,12 @@ void sickle_attack(edict_t* ent, vec3_t g_offset, int damage);
 void Weapon_Sickle_Fire(edict_t* ent);
 void Weapon_Sickle(edict_t* ent);
 
+// Barbel methods
+void fire_barbel(edict_t* self, vec3_t start, vec3_t aimdir, int damage, int kick);
+void barbel_attack(edict_t* ent, vec3_t g_offset, int damage);
+void Weapon_Barbel_Fire(edict_t* ent);
+void Weapon_Barbel(edict_t* ent);
+
 // Torch methods
 void Weapon_Torch_Fire(edict_t* ent);
 void Weapon_Torch(edict_t* ent);

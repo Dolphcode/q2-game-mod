@@ -1234,7 +1234,7 @@ gitem_t	itemlist[] =
 		NULL,
 		NULL,
 		"misc/ar1_pkup.wav",
-		"models/items/armor/body/tris.md2", EF_ROTATE,
+		"models/items/resources/marble/tris.md2", EF_ROTATE,
 		NULL,
 		/* icon */		"i_marble",
 		/* pickup */	"Marble",
@@ -1245,7 +1245,7 @@ gitem_t	itemlist[] =
 		0,
 		NULL,
 		0,
-		/* precache */ ""
+		/* precache */ "models/items/resources/marble/skin.pcx"
 			},
 
 	/*QUAKED item_grass (.3 .3 1) (-16 -16 -16) (16 16 16)
