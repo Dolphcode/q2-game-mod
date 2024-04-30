@@ -1652,6 +1652,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	ent->frametime += FRAMETIME;
 	if (ent->frametime >= 8.3) {
 
+		if (ent->client->showhelp)
+			HelpComputer(ent);
+
 		daycycle = ent->lifetime % 15;
 		if (daycycle < 5) {
 			gi.AddCommandString("sky day_");
