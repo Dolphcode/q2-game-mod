@@ -1303,7 +1303,7 @@ gitem_t	itemlist[] =
 		NULL,
 		NULL,
 		"misc/ar1_pkup.wav",
-		"models/items/armor/body/tris.md2", EF_ROTATE,
+		"models/items/resources/ruby/tris.md2", EF_ROTATE,
 		NULL,
 		/* icon */		"i_ruby",
 		/* pickup */	"Ruby",
