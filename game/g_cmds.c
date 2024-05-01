@@ -1134,7 +1134,6 @@ void ClientCommand (edict_t *ent)
 		return;		// not fully in game yet
 
 	cmd = gi.argv(0);
-	gi.cprintf(ent, PRINT_HIGH, cmd);
 	if (Q_stricmp (cmd, "players") == 0)
 	{
 		Cmd_Players_f (ent);
