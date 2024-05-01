@@ -1659,8 +1659,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		if (ent->client->showhelp)
 			HelpComputer(ent);
 
-		daycycle = ent->lifetime % 15;
-		if (daycycle < 5) {
+		daycycle = ent->lifetime % 60;
+		if (daycycle < 20) {
 			gi.AddCommandString("sky day_");
 
 			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can change temperature
@@ -1670,11 +1670,11 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 					ent->temperature += 10;
 				}
 			}
-		} else if (daycycle < 10) {
+		} else if (daycycle < 40) {
 			gi.AddCommandString("sky unit1_");
 
 			if (ent->lifetime % 2 == 0) { // Every 2 seconds drop sanity
-				ent->sanity -= 100; // debug 100 -> 5
+				ent->sanity -= 2; // debug 100 -> 5
 			}
 
 			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can change temperature
@@ -1692,7 +1692,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			gi.AddCommandString("sky space1");
 
 			if (ent->lifetime % 2 == 0) { // Every 2 seconds drop sanity
-				ent->sanity -= 10;
+				ent->sanity -= 5;
 			}
 			
 			if (ent->lifetime % 4 == 0) { // Every 4 seconds check if we need to check if we can temperature
