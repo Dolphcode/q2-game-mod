@@ -1349,7 +1349,7 @@ gitem_t	itemlist[] =
 		NULL,
 		NULL,
 		"misc/ar1_pkup.wav",
-		"models/items/armor/body/tris.md2", EF_ROTATE,
+		"models/items/resources/gmeat/tris.md2", EF_ROTATE,
 		NULL,
 		/* icon */		"i_gourmet",
 		/* pickup */	"Gourmet Meat",

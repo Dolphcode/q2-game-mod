@@ -1749,7 +1749,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 			VectorAdd(ent->s.origin, v, v);
 			VectorCopy(v, e->s.origin);
 
-			SP_monster_berserk(e);
+			SP_monster_nightmare(e);
 		}
 
 		CheckStat(&(ent->hunger));

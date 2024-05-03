@@ -1036,7 +1036,7 @@ void Cmd_SpawnNightmare_f(edict_t* ent) {
 	VectorAdd(ent->s.origin, v, v);
 	VectorCopy(v, e->s.origin);
 
-	SP_monster_berserk(e);
+	SP_monster_nightmare(e);
 }
 
 /*
