@@ -408,7 +408,7 @@ void berserk_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dama
 
 	gitem_t* it;
 	edict_t* it_ent;
-	it = FindItem("Hearty Meat");
+	it = FindItem("Gourmet Meat");
 	it_ent = G_Spawn();
 	it_ent->classname = it->classname;
 	SpawnItem(it_ent, it);
@@ -486,7 +486,7 @@ void SP_monster_nightmare(edict_t* self)
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
 
-	self->health = 100;
+	self->health = 30;
 	self->gib_health = -60;
 	self->mass = 250;
 
