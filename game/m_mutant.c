@@ -793,7 +793,7 @@ void SP_resource_gold(edict_t* self)
 
 	self->monsterinfo.scale = MODEL_SCALE;
 
-	self->classname = "luxmineable";
+	self->classname = "mineable";
 	self->takedamage = DAMAGE_NO;
 
 	walkmonster_start(self);
