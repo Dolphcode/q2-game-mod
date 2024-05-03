@@ -1709,7 +1709,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 
 		ent->frametime = 0.0;
-		ent->lifetime += 1;
+		if (ent->health > 0)
+			ent->lifetime += 1;
 
 		if (ent->lifetime % 2 == 0) {
 			ent->hunger -= 5; // 100 debug
