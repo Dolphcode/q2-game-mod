@@ -391,7 +391,7 @@ void HelpComputer (edict_t *ent)
 		"Beat your high score",
 		level.killed_monsters,
 		ent->lifetime,
-		level.found_secrets);
+		ent->highscore);
 
 	gi.WriteByte (svc_layout);
 	gi.WriteString (string);

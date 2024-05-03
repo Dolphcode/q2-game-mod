@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "g_local.h"
 #include "m_player.h"
+#include "direct.h"
 
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
@@ -500,6 +501,12 @@ player_die
 */
 void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)
 {
+	FILE* f;
+
+	f = fopen("./quakestarve/highscore/score.bin", "r+b");  // w for write, b for binary
+	fwrite(&(self->highscore), sizeof(&(self->highscore)), 1, f);
+	fclose(f);
+
 	int		n;
 
 	VectorClear (self->avelocity);
@@ -726,6 +733,39 @@ void FetchClientEntData (edict_t *ent)
 	ent->mightiness = ent->client->pers.mightiness;
 	ent->lifetime = ent->client->pers.lifetime;
 	ent->frametime = ent->client->pers.frametime;
+	
+	/*
+	char scorefile[MAX_OSPATH];
+	char* wd;
+	FILE* f;
+
+	//_getcwd(wd, sizeof(wd));
+	//wd = _getcwd(NULL, 0);
+	//Com_sprintf(scorefile, sizeof(scorefile), "%s/highscore/score.bin", "C:/Program Files (x86)/Steam/steamapps/common/Quake 2/quakestarve/highscore/score.bin");
+	f = fopen("/highscore/score.bin", "wb");
+	int val = 0;
+	fwrite(&val, sizeof(int), 1, f);
+	/*
+	if (feof(f)) {
+		int val = 0;
+		fwrite(&val, sizeof(int), 1, f);
+	}
+	else {
+		fread(&(ent->highscore), sizeof(&(ent->highscore)), 1, f);
+	}*/
+	//fclose(f);
+
+	FILE* f;
+
+	f = fopen("./quakestarve/highscore/score.bin", "r+b");  // w for write, b for binary
+	if (feof(f)) {
+		int val = 0;
+		fwrite(&val, sizeof(int), 1, f);
+	}
+	else {
+		fread(&(ent->highscore), sizeof(&(ent->highscore)), 1, f);
+	}
+	fclose(f);
 
 	ent->flags |= ent->client->pers.savedFlags;
 	if (coop->value)
@@ -1709,8 +1749,12 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 
 		ent->frametime = 0.0;
-		if (ent->health > 0)
+		if (ent->health > 0) {
 			ent->lifetime += 1;
+			if (ent->lifetime > ent->highscore) {
+				ent->highscore = ent->lifetime;
+			}
+		}
 
 		if (ent->lifetime % 2 == 0) {
 			ent->hunger -= 5; // 100 debug

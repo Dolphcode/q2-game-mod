@@ -1089,6 +1089,7 @@ struct edict_s
 	int			temperature;
 	int			mightiness;
 	int			lifetime;
+	int			highscore;
 	float		frametime;
 
 	float		powerarmor_time;
