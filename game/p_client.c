@@ -653,8 +653,8 @@ void InitClientPersistant (gclient_t *client)
 	client->pers.hunger			= 100;
 	client->pers.sanity			= 100;
 	client->pers.stamina		= 100;
-	client->pers.temperature	= 100;
-	client->pers.mightiness		= 100;
+	client->pers.temperature	= 50;
+	client->pers.mightiness		= 50;
 	client->pers.lifetime		= 0;
 	client->pers.frametime		= 0.0;
 
