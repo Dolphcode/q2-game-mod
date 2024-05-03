@@ -1190,6 +1190,14 @@ void soldier_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dama
 		self->monsterinfo.currentmove = &soldier_move_death5;
 	else
 		self->monsterinfo.currentmove = &soldier_move_death6;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Hearty Meat");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
 }
 
 

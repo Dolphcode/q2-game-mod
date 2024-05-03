@@ -493,6 +493,14 @@ void parasite_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dam
 	self->deadflag = DEAD_DEAD;
 	self->takedamage = DAMAGE_YES;
 	self->monsterinfo.currentmove = &parasite_move_death;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Gourmet Meat");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
 }
 
 /*

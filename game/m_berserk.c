@@ -405,6 +405,14 @@ void berserk_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int dama
 		self->monsterinfo.currentmove = &berserk_move_death1;
 	else
 		self->monsterinfo.currentmove = &berserk_move_death2;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Hearty Meat");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
 }
 
 
@@ -454,4 +462,50 @@ void SP_monster_berserk (edict_t *self)
 	gi.linkentity (self);
 
 	walkmonster_start (self);
+}
+
+void SP_monster_nightmare(edict_t* self)
+{
+	if (deathmatch->value)
+	{
+		G_FreeEdict(self);
+		return;
+	}
+
+	// pre-caches
+	sound_pain = gi.soundindex("berserk/berpain2.wav");
+	sound_die = gi.soundindex("berserk/berdeth2.wav");
+	sound_idle = gi.soundindex("berserk/beridle1.wav");
+	sound_punch = gi.soundindex("berserk/attack.wav");
+	sound_search = gi.soundindex("berserk/bersrch1.wav");
+	sound_sight = gi.soundindex("berserk/sight.wav");
+
+	self->s.modelindex = gi.modelindex("models/monsters/berserk/tris.md2");
+	VectorSet(self->mins, -16, -16, -24);
+	VectorSet(self->maxs, 16, 16, 32);
+	self->movetype = MOVETYPE_STEP;
+	self->solid = SOLID_BBOX;
+
+	self->health = 100;
+	self->gib_health = -60;
+	self->mass = 250;
+
+	self->pain = berserk_pain;
+	self->die = berserk_die;
+
+	self->monsterinfo.stand = berserk_stand;
+	self->monsterinfo.walk = berserk_walk;
+	self->monsterinfo.run = berserk_run;
+	self->monsterinfo.dodge = NULL;
+	self->monsterinfo.attack = NULL;
+	self->monsterinfo.melee = berserk_melee;
+	self->monsterinfo.sight = berserk_sight;
+	self->monsterinfo.search = berserk_search;
+
+	self->monsterinfo.currentmove = &berserk_move_stand;
+	self->monsterinfo.scale = MODEL_SCALE;
+
+	gi.linkentity(self);
+
+	walkmonster_start(self);
 }

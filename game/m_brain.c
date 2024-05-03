@@ -614,6 +614,14 @@ void brain_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage
 		self->monsterinfo.currentmove = &brain_move_death1;
 	else
 		self->monsterinfo.currentmove = &brain_move_death2;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Hearty Meat");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
 }
 
 /*QUAKED monster_brain (1 .5 0) (-16 -16 -24) (16 16 32) Ambush Trigger_Spawn Sight

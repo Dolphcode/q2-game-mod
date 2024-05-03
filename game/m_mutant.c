@@ -599,6 +599,14 @@ void mutant_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 		self->monsterinfo.currentmove = &mutant_move_death1;
 	else
 		self->monsterinfo.currentmove = &mutant_move_death2;
+
+	gitem_t* it;
+	edict_t* it_ent;
+	it = FindItem("Gourmet Meat");
+	it_ent = G_Spawn();
+	it_ent->classname = it->classname;
+	SpawnItem(it_ent, it);
+	VectorCopy(self->s.origin, it_ent->s.origin);
 }
 
 
