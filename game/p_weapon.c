@@ -2015,7 +2015,7 @@ void sickle_attack(edict_t* ent, vec3_t g_offset, int damage) {
 	VectorSet(offset, 0, 8, ent->viewheight - 8);
 	P_ProjectSource(ent->client, ent->s.origin, offset, forward, right, start);
 
-	fire_shovel(ent, start, forward, damage, SICKLE_KICK);
+	fire_sickle(ent, start, forward, damage, SICKLE_KICK);
 
 	//ent->client->ps.gunframe++;
 	//PlayerNoise(ent, start, PNOISE_WEAPON);

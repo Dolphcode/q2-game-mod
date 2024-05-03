@@ -1257,7 +1257,7 @@ gitem_t	itemlist[] =
 		NULL,
 		NULL,
 		"misc/ar1_pkup.wav",
-		"models/items/armor/body/tris.md2", EF_ROTATE,
+		"models/items/resources/grass/tris.md2", EF_ROTATE,
 		NULL,
 		/* icon */		"i_grass",
 		/* pickup */	"Grass",
