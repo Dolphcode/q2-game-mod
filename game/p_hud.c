@@ -291,6 +291,53 @@ void Cmd_Score_f (edict_t *ent)
 	DeathmatchScoreboard (ent);
 }
 
+/*
+==================
+HelpTextComputer
+
+Draw mod instructions
+==================
+*/
+void HelpTextComputer(edict_t* ent)
+{
+	char	string[4096];
+
+	// send the layout
+	/*
+	Com_sprintf (string, sizeof(string),
+		"xv 32 yv 8 picn help "			// background
+		"xv 202 yv 12 string2 \"%s\" "		// skill
+		"xv 0 yv 24 cstring2 \"%s\" "		// level name
+		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
+		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
+		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
+		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ",
+		sk,
+		level.level_name,
+		game.helpmessage1,
+		game.helpmessage2,
+		level.killed_monsters, level.total_monsters,
+		level.found_goals, level.total_goals,
+		level.found_secrets, level.total_secrets);
+	*/
+
+
+	/* MOD ADDITION
+	*  - Displays stats
+	*  - Displays craftables
+	*/
+	Com_sprintf(string, sizeof(string),
+		"xv -96 yv 8 picn inventory "			// stats
+		"xv -64 yv 24 string2 \"This is the greatest show\n\" "		// hunger
+		"xv 160 yv 8 picn inventory "			// crafts
+		"xv 180 yv 24 string2 \"This is the greatest thing\nof all time\" ");
+
+	gi.WriteByte(svc_layout);
+	gi.WriteString(string);
+	gi.unicast(ent, true);
+}
+
+
 
 /*
 ==================
@@ -301,6 +348,11 @@ Draw help computer.
 */
 void HelpComputer (edict_t *ent)
 {
+	if (ent->client->modhelp) {
+		HelpTextComputer(ent);
+		return;
+	}
+
 	char	string[4096];
 	char	*sk;
 
@@ -399,6 +451,8 @@ void HelpComputer (edict_t *ent)
 }
 
 
+
+
 /*
 ==================
 Cmd_Help_f
@@ -427,6 +481,19 @@ void Cmd_Help_f (edict_t *ent)
 	ent->client->showhelp = true;
 	ent->client->pers.helpchanged = 0;
 	HelpComputer (ent);
+}
+
+/*
+==================
+Cmd_HelpMod_f
+
+Display the current help message
+==================
+*/
+void Cmd_HelpMod_f(edict_t* ent)
+{
+	ent->client->modhelp = !ent->client->modhelp;
+	gi.cprintf(ent, PRINT_HIGH, "Show mod help screen: %i\n", ent->client->modhelp);
 }
 
 

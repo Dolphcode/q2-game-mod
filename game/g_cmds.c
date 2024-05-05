@@ -1215,6 +1215,8 @@ void ClientCommand (edict_t *ent)
 		Cmd_SpawnNightmare_f(ent);
 	else if (Q_stricmp(cmd, "craft") == 0)
 		Cmd_Craft_f(ent);
+	else if (Q_stricmp(cmd, "modhelp") == 0)
+		Cmd_HelpMod_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
