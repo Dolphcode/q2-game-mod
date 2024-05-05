@@ -302,35 +302,60 @@ void HelpTextComputer(edict_t* ent)
 {
 	char	string[4096];
 
-	// send the layout
-	/*
-	Com_sprintf (string, sizeof(string),
-		"xv 32 yv 8 picn help "			// background
-		"xv 202 yv 12 string2 \"%s\" "		// skill
-		"xv 0 yv 24 cstring2 \"%s\" "		// level name
-		"xv 0 yv 54 cstring2 \"%s\" "		// help 1
-		"xv 0 yv 110 cstring2 \"%s\" "		// help 2
-		"xv 50 yv 164 string2 \" kills     goals    secrets\" "
-		"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ",
-		sk,
-		level.level_name,
-		game.helpmessage1,
-		game.helpmessage2,
-		level.killed_monsters, level.total_monsters,
-		level.found_goals, level.total_goals,
-		level.found_secrets, level.total_secrets);
-	*/
-
-
-	/* MOD ADDITION
-	*  - Displays stats
-	*  - Displays craftables
-	*/
 	Com_sprintf(string, sizeof(string),
-		"xv -96 yv 8 picn inventory "			// stats
-		"xv -64 yv 24 string2 \"This is the greatest show\n\" "		// hunger
-		"xv 160 yv 8 picn inventory "			// crafts
-		"xv 180 yv 24 string2 \"This is the greatest thing\nof all time\" ");
+		"xv -112 yv 8 picn inventory "			// stats
+		"xv -96 yv 24 string2 \"Welcome to Quake Starve!\" "
+		"xv -96 yv 32 string2 \"This mod adds features from\" "
+		"xv -96 yv 40 string2 \"Don't Starve into Quake 2.\" "
+		"xv -96 yv 48 string2 \"Your goal is to Survive\" "
+		"xv -96 yv 56 string2 \"You will start with an axe\" "
+		"xv -96 yv 64 string2 \"and a pickaxe, you can scroll\" "
+		"xv -96 yv 72 string2 \"through your tools with the 1\" "
+		"xv -96 yv 80 string2 \"key. Each tool can be used\" "
+		"xv -96 yv 88 string2 \"for a specific gatherables.\" "
+		"xv -96 yv 96 string2 \"They have durability so you can\" "
+		"xv -96 yv 104 string2 \"craft more using the craft\" "
+		"xv -96 yv 112 string2 \"command. The help screen will\" "
+		"xv -96 yv 120 string2 \"show you all the things you can\" "
+		"xv -96 yv 128 string2 \"craft by name. To spawn\" "
+		"xv -96 yv 136 string2 \"resources, use spawnresource\" "
+		"xv -96 yv 144 string2 \"command with one of the\" "
+		"xv -96 yv 152 string2 \"following arguments: tree,\" "
+		"xv -96 yv 160 string2 \"stone, marble, gold, grass.\" "
+		"xv -96 yv 168 string2 \"grave.\" ");
+
+	gi.WriteByte(svc_layout);
+	gi.WriteString(string);
+	gi.unicast(ent, true);
+}
+
+/*
+==================
+HelpTextComputer
+
+Draw mod instructions
+==================
+*/
+void HelpTextComputer2(edict_t* ent)
+{
+	char	string[4096];
+
+	Com_sprintf(string, sizeof(string),
+		"xv 176 yv 8 picn inventory "			// crafts
+		"xv 196 yv 24 string2 \"You have five stats to \" "
+		"xv 196 yv 32 string2 \"maintain on top of health:\" "
+		"xv 196 yv 48 string2 \"If your hunger gets too \" "
+		"xv 196 yv 56 string2 \"low you take damage over \" "
+		"xv 196 yv 64 string2 \"time.\" "
+		"xv 196 yv 80 string2 \"If your sanity gets too\" "
+		"xv 196 yv 88 string2 \"low nightmares will spawn.\" "
+		"xv 196 yv 104 string2 \"You consume stamina when you\" "
+		"xv 196 yv 112 string2 \"work.\" "
+		"xv 196 yv 128 string2 \"If your temperature gets\" "
+		"xv 196 yv 136 string2 \"too high or low you take\" "
+		"xv 196 yv 144 string2 \"damage\" "
+		"xv 196 yv 160 string2 \"Keep your mightiness up to\" "
+		"xv 196 yv 168 string2 \"do tasks more efficiently.\" ");
 
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
@@ -348,8 +373,12 @@ Draw help computer.
 */
 void HelpComputer (edict_t *ent)
 {
-	if (ent->client->modhelp) {
+	if (ent->client->modhelp == 0) {
 		HelpTextComputer(ent);
+		return;
+	}
+	else if (ent->client->modhelp == 1) {
+		HelpTextComputer2(ent);
 		return;
 	}
 
@@ -492,7 +521,15 @@ Display the current help message
 */
 void Cmd_HelpMod_f(edict_t* ent)
 {
-	ent->client->modhelp = !ent->client->modhelp;
+	if (ent->client->modhelp == 0) {
+		ent->client->modhelp = 1;
+	}
+	else if (ent->client->modhelp == 1) {
+		ent->client->modhelp = 2;
+	}
+	else {
+		ent->client->modhelp = 0;
+	}
 	gi.cprintf(ent, PRINT_HIGH, "Show mod help screen: %i\n", ent->client->modhelp);
 }
 
