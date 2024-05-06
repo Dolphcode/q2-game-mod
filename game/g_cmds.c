@@ -1061,12 +1061,18 @@ void Cmd_Craft_f(edict_t* ent) {
 			*wood -= 1;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("PickaxeUses"))] += FindItem("PickaxeUses")->quantity;
 		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft pickaxe uses");
+		}
 	}
 	else if (!Q_stricmp(gi.args(), "axe")) {
 		if (*stone >= 2 && *wood >= 1) {
 			*stone -= 2;
 			*wood -= 1;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("AxeUses"))] += FindItem("AxeUses")->quantity;
+		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft axe uses");
 		}
 	}
 	else if (!Q_stricmp(gi.args(), "torch")) {
@@ -1075,12 +1081,18 @@ void Cmd_Craft_f(edict_t* ent) {
 			*grass -= 2;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("TorchUses"))] += FindItem("TorchUses")->quantity;
 		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft torch fuel");
+		}
 	}
 	else if (!Q_stricmp(gi.args(), "sickle")) {
 		if (*stone >= 2 && *wood >= 1) {
 			*stone -= 2;
 			*wood -= 1;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("SickleUses"))] += FindItem("SickleUses")->quantity;
+		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft sickle uses");
 		}
 	}
 	else if (!Q_stricmp(gi.args(), "shovel")) {
@@ -1089,6 +1101,9 @@ void Cmd_Craft_f(edict_t* ent) {
 			*wood -= 1;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("ShovelUses"))] += FindItem("ShovelUses")->quantity;
 		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft shovel uses");
+		}
 	}
 	else if (!Q_stricmp(gi.args(), "luxpick")) {
 		if (*gold >= 2 && *ruby >= 1) {
@@ -1096,11 +1111,17 @@ void Cmd_Craft_f(edict_t* ent) {
 			*ruby -= 1;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("LuxuryPickaxeUses"))] += FindItem("LuxuryPickaxeUses")->quantity;
 		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft luxury pickaxe uses");
+		}
 	}
 	else if (!Q_stricmp(gi.args(), "bell")) {
 		if (*marble >= 2) {
 			*marble -= 1;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("TorchUses"))] += FindItem("TorchUses")->quantity;
+		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft dumbbell uses");
 		}
 	}
 	else if (!Q_stricmp(gi.args(), "drip")) {
@@ -1108,11 +1129,18 @@ void Cmd_Craft_f(edict_t* ent) {
 			*hmeat -= 2;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("IV Drip"))] += FindItem("IV Drip")->quantity;
 		}
+
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft iv drip");
+		}
 	}
 	else if (!Q_stricmp(gi.args(), "stew")) {
 		if (*gmeat >= 2) {
 			*gmeat -= 2;
 			ent->client->pers.inventory[ITEM_INDEX(FindItem("Vial of Stew"))] += FindItem("Vial of Stew")->quantity;
+		}
+		else {
+			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft vial of stew");
 		}
 	}
 	else {
