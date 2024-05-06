@@ -503,7 +503,7 @@ void player_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damag
 {
 	FILE* f;
 
-	f = fopen("./quakestarve/highscore/score.bin", "r+b");  // w for write, b for binary
+	f = fopen("./quakestarve/highscore/score.bin", "wb");  // w for write, b for binary
 	fwrite(&(self->highscore), sizeof(&(self->highscore)), 1, f);
 	fclose(f);
 
@@ -757,8 +757,9 @@ void FetchClientEntData (edict_t *ent)
 
 	FILE* f;
 
-	f = fopen("./quakestarve/highscore/score.bin", "r+b");  // w for write, b for binary
-	if (feof(f)) {
+	f = fopen("./quakestarve/highscore/score.bin", "rb");  // w for write, b for binary
+	if (!f) {
+		f = fopen("./quakestarve/highscore/score.bin", "wb");
 		int val = 0;
 		fwrite(&val, sizeof(int), 1, f);
 	}
