@@ -1757,7 +1757,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 		}
 
 		if (ent->lifetime % 2 == 0) {
-			ent->hunger -= 5; // 100 debug
+			ent->hunger -= 3; // 100 debug
 		}
 
 		ent->mightiness -= 1;
