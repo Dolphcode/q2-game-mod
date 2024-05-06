@@ -1691,7 +1691,7 @@ gitem_t	itemlist[] =
 		/* icon */		"i_barbel",
 		/* pickup */	"Barbel",
 				0,
-				1,
+				10,
 				"BarbelUses",
 				IT_WEAPON,
 				WEAP_SHOTGUN,

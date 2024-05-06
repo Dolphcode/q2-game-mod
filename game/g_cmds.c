@@ -1144,7 +1144,7 @@ void Cmd_Craft_f(edict_t* ent) {
 	else if (!Q_stricmp(gi.args(), "bell")) {
 		if (*marble >= 2) {
 			*marble -= 1;
-			ent->client->pers.inventory[ITEM_INDEX(FindItem("TorchUses"))] += FindItem("TorchUses")->quantity;
+			ent->client->pers.inventory[ITEM_INDEX(FindItem("BarbelUses"))] += FindItem("BarbelUses")->quantity;
 		}
 		else {
 			gi.cprintf(ent, PRINT_HIGH, "Not enough materials to craft dumbbell uses");
