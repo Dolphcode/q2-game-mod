@@ -1015,6 +1015,32 @@ void Cmd_SpawnResource_f(edict_t* ent) {
 
 /*
 =================
+MOD ADDITION - Setters
+=================
+*/
+void Cmd_SetHunger_f(edict_t* ent) {
+	ent->hunger = atoi(gi.args());
+	CheckStat(&(ent->hunger));
+}
+
+void Cmd_SetSanity_f(edict_t* ent) {
+	ent->sanity = atoi(gi.args());
+	CheckStat(&(ent->sanity));
+}
+
+void Cmd_SetTemp_f(edict_t* ent) {
+	ent->temperature = atoi(gi.args());
+	CheckStat(&(ent->temperature));
+}
+
+void Cmd_SetMight_f(edict_t* ent) {
+	ent->mightiness = atoi(gi.args());
+	CheckStat(&(ent->mightiness));
+}
+
+
+/*
+=================
 MOD ADDITION - SpawnNightmareMonster
 =================
 */
@@ -1245,6 +1271,14 @@ void ClientCommand (edict_t *ent)
 		Cmd_Craft_f(ent);
 	else if (Q_stricmp(cmd, "modhelp") == 0)
 		Cmd_HelpMod_f(ent);
+	else if (Q_stricmp(cmd, "hunger") == 0)
+		Cmd_SetHunger_f(ent);
+	else if (Q_stricmp(cmd, "sanity") == 0)
+		Cmd_SetSanity_f(ent);
+	else if (Q_stricmp(cmd, "temperature") == 0)
+		Cmd_SetTemp_f(ent);
+	else if (Q_stricmp(cmd, "mightiness") == 0)
+		Cmd_SetMight_f(ent);
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

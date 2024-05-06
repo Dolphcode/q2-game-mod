@@ -560,14 +560,14 @@ void Use_Food(edict_t* ent, gitem_t* item)
 	ent->client->pers.inventory[index] -= 1;
 
 	if (Q_stricmp(item->pickup_name, "IV Drip")) {
-		ent->health += 20;
+		ent->health += 30;
 		if (ent->health >= ent->max_health)
 			ent->health = ent->max_health;
-		ent->hunger += 20;
+		ent->hunger += 60;
 	}
 	else {
-		ent->sanity += 20;
-		ent->hunger += 20;
+		ent->sanity += 60;
+		ent->hunger += 60;
 	}
 
 	gi.sound(ent, CHAN_AUTO, gi.soundindex("misc/power1.wav"), 1, ATTN_NORM, 0);
